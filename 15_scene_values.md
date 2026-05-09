@@ -1,94 +1,62 @@
-# Skill 15 — Scene Value Shift Analysis
+# Skill 15 — Scene Values
 
 ## Purpose
-Every scene must turn the value-charged condition of a character's life from one
-polarity to another. If the value at the scene's opening is identical to the value
-at its close, nothing meaningful happened — the scene is a non-event. McKee:
-"Why is this scene in your script?"
 
-This is the most actionable and non-negotiable exercise in the set. It applies
-to every single scene. There are no exceptions.
+Every scene must turn the value-charged condition of a character's life from one polarity to another. If the value at the scene's opening is identical to the value at its close, nothing meaningful happened — the scene is a non-event. McKee: "Why is this scene in your script?"
 
-Run this exercise scene by scene across the full script. Produce a chart.
+This is the most actionable and non-negotiable exercise in the set. Run it scene by scene across the full script. Produce a chart.
 
 ## Inputs
-- script.txt
-- 02_controlling_idea.md
+
+- `script.txt`
+- `beat_sheet.txt`
+- `02_controlling_idea.md`
 
 ## Instructions
 
-If a required input file is missing or does not contain the expected content, halt immediately and report the missing input to the orchestrator — do not proceed with partial context.
+For EACH scene, complete five steps.
 
-For EACH scene in the script, complete the following five steps.
+### Step 1 — Define the conflict
+Scene protagonist (driving) and scene antagonist (opposing). State each desire as an infinitive: "[Character] wants to [X]." "[Character/force] wants to [Y]." Conflict must be DIRECT, not tangential.
 
-### Step 1 — Define the Conflict
-Who is driving the scene (scene protagonist)?
-Who or what is opposing them (scene antagonist)?
-State each desire as an infinitive:
-"[Character] wants to [X]." "[Character/force] wants to [Y]."
-The conflict must be DIRECT — not tangential.
+### Step 2 — Opening value
+The controlling idea names the core value the story tracks — use it as compass for which polarity matters most. State opening value as one word + polarity: hope (positive), shame (negative), safety (positive), isolation (negative).
 
-### Step 2 — Note the Opening Value
-The controlling idea names the core value this story is tracking — use it as your compass for which value polarity matters most in each scene. What value-charged condition is operative at the scene's start?
-State it as one word and its polarity: hope (positive), isolation (negative),
-safety (positive), shame (negative).
+### Step 3 — Break into beats
+A beat is one exchange of action/reaction. For each beat, assign a gerund pair: asking/ignoring, insisting/deflecting. Gerunds label what characters are *doing*, not saying.
 
-### Step 3 — Break into Beats
-A beat is one exchange of action/reaction in character behavior.
-For each beat, assign a gerund pair: asking/ignoring, insisting/deflecting.
-These label what characters are actually DOING — not what they are saying.
+### Step 4 — Closing value, compare
+Same word? Same polarity? Opening = closing = non-event; flag it. Same polarity but value shifted — note the degree.
 
-### Step 4 — Note the Closing Value and Compare
-What is the value at the scene's end? Same word? Same polarity?
-If opening value = closing value: the scene is a non-event. Flag it.
-If opening polarity = closing polarity (both negative, or both positive)
-but the value has shifted: note the degree of change — is it meaningful?
+### Step 5 — Locate the turning point
+The moment value shifts — the gap between expectation and result. Specific? Surprising-yet-inevitable in retrospect?
 
-### Step 5 — Locate the Turning Point
-Survey the beats. Find the moment when the value shifts — the gap between
-expectation and result that causes the reversal. Is it specific? Does it
-arrive as a surprise that feels, in retrospect, inevitable?
+## Output
 
-## Output Format
+Save as `15_scene_values.md`. Two parts:
 
-If the script does not provide enough material to complete this analysis confidently, mark the output [INCONCLUSIVE] at the top of the file, describe what is missing or ambiguous, and flag it for human review before the pipeline continues.
+**1. Scene-by-scene chart:**
 
-Save as `15_scene_values.md`:
-
-First, a scene-by-scene chart:
-```
-SCENE VALUE CHART:
 | Scene | Opening Value | Closing Value | Turns? | Turning Point |
-|-------|--------------|---------------|--------|---------------|
-| 1     | [value/charge] | [value/charge] | YES/NO | [beat] |
-| 2     | ...
-...
-```
+|---|---|---|---|---|
+| 1 | hope (+) | shame (−) | YES | beat 4 |
+| ... |
 
-Then, for each scene that FAILS (does not turn):
-```
-SCENE [X] — NON-EVENT ANALYSIS:
-Conflict: [protagonist want / antagonist want]
-Opening value: [word + charge]
-Closing value: [word + charge — same as opening]
-Why it fails: [specific explanation]
-How to fix it: [concrete suggestion — what would have to change in the scene's
-action for the value to shift by the end]
-```
+**2. For each non-event scene:**
+- Conflict (protagonist want / antagonist want)
+- Opening + closing value (same)
+- Why it fails
+- Concrete fix — what would have to change for the value to shift
 
-Then overall:
-```
-SCENES THAT TURN: [count] / [total]
-SCENES THAT DON'T: [list]
-STRONGEST TURNING POINT: [scene + why it works]
-WEAKEST SCENE: [scene + most urgent fix needed]
+**3. Overall:**
+- SCENES THAT TURN: count / total
+- SCENES THAT DON'T: list
+- STRONGEST TURNING POINT (scene + why)
+- WEAKEST SCENE (most urgent fix)
+- TEACHING MOMENT — 4-part structure; non-event rule; surprising-yet-inevitable
 
-TEACHING MOMENT:
-[Explain the non-event rule — why a scene where nothing changes is not just
-weak but actively harmful. Why the turning point must feel both surprising
-and inevitable. Why this is the test every scene must pass before anything else.]
-```
+---
 
-## Note: Pit Stop
-This exercise is followed by a pit stop. The orchestrator handles the pause and user review — your job is to complete the analysis, save the output, and report done.
+Follow the orchestrator's OUTPUT STYLE block. If inputs are missing, halt and report. If analysis is inconclusive, mark `[INCONCLUSIVE]` at the top.
 
+A pit stop follows this skill. The orchestrator handles the pause.
