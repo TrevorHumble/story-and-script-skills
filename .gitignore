@@ -1,0 +1,12 @@
+# Per-script analysis — kept local, not pushed
+script.txt
+beat_sheet.txt
+outputs/
+board_check*.png
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
