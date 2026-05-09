@@ -1,96 +1,48 @@
-# Skill 01 — Genre Contract Audit
+# Skill 01 — Genre Contract
 
 ## Purpose
-Every story makes a promise to its audience before a single scene plays out. That
-promise is the genre contract: a set of conventions the audience expects to see honored,
-and a set of obligatory scenes they need delivered. This skill audits whether the script
-is keeping that promise — and whether it's doing so freshly or falling back on cliché.
 
-This runs first because everything downstream depends on knowing what kind of story
-this is and what it must deliver. A thriller that doesn't generate dread, a romance
-that doesn't earn connection — these aren't just missed opportunities, they're broken
-contracts.
+Every story makes a promise to its audience before a single scene plays out — a set of conventions to honor and obligatory scenes to deliver. This skill audits that promise: what genre this is, what it must deliver, where it's fresh vs. clichéd. Runs first because every downstream skill depends on knowing what this story has committed to.
 
 ## Inputs
-- script.txt
-- beat_sheet.txt
+
+- `script.txt`
+- `beat_sheet.txt`
+- `intake.md` (genre field as starting point)
 
 ## Instructions
 
-### Step 1 — Name the Genre
-Read the script. Identify the genre or genre blend. Be specific.
-Not "drama" — "surrealist coming-of-age with dark comedy elements."
-Not "romance" — "reluctant-connection character study with magical realist framing."
+### Step 1 — Name the genre
+Be specific. Not "drama" — "surrealist coming-of-age with body-horror." Name dominant + secondary if hybrid. Cross-check against `intake.md`.
 
-If multiple genres are at play, name the dominant one and the secondary one.
-Note: a short film often bends genre more aggressively than a feature. That's fine —
-but the contract still exists and must be named.
+### Step 2 — Emotional promise
+One sentence: "This story promises [emotion] through [experience]."
 
-### Step 2 — Define the Emotional Promise
-What core emotional experience does this genre promise the audience?
-Write it as a sentence: "This story promises the audience [X feeling] through [Y experience]."
-Example: "This story promises the audience a sense of liberation and melancholy through
-watching a person discover they've been giving themselves away."
+### Step 3 — Obligatory scenes
+For the named genre, list the scenes the audience needs. For each: present? Executed freshly or predictably? Missing scenes get flagged.
 
-### Step 3 — List the Obligatory Scenes
-Based on the genre, list the scenes the audience absolutely needs to see.
-These are the scenes whose absence would feel like a cheat.
+### Step 4 — Conventions
+Recurring elements (character types, settings, tonal registers). For each: present, used as foundation or as cliché?
 
-For each obligatory scene:
-- Name it
-- Check whether it is present in the script
-- If present: is it executed freshly or predictably?
-- If missing: flag it
+### Step 5 — Genre confusion
+Does the opening promise one contract and the ending deliver another? Is the shift earned or stranding?
 
-### Step 4 — List the Conventions
-List the genre's recurring elements — character types, settings, tonal registers,
-structural patterns — that signal to the audience what kind of story this is.
-For each: is it present? Is it used as a foundation for something specific, or
-as a shorthand that produces cliché?
+### Step 6 — Subversion assessment
+Where is convention being subverted? Is the subversion earning something, or avoiding the work of executing the convention well?
 
-### Step 5 — Check for Genre Confusion
-Does the script promise one genre contract in the opening and deliver a different
-one by the end? If so: is the shift earned and intentional, or does it leave the
-audience stranded?
+## Output
 
-### Step 6 — Subversion Assessment
-McKee's standard: a masterful genre writer honors every convention but executes
-none of them predictably. Where is this script subverting convention? Is the
-subversion earning something, or is it avoiding the hard work of executing the
-convention well?
+Save as `01_genre_contract.md`:
 
-## Output Format
+- **GENRE** (specific) and **EMOTIONAL PROMISE** (one sentence)
+- **OBLIGATORY SCENES** — table: name, present/missing, fresh/clichéd
+- **CONVENTIONS** — same table format
+- **GENRE CONFUSION** — yes/no, explanation
+- **SUBVERSION** — what's subverted, whether it earns it
+- **PROBLEMS** — numbered, scene-specific
+- **SUGGESTIONS** — concrete interventions
+- **TEACHING MOMENT** — 4-part structure
 
-If the script does not provide enough material to complete this analysis confidently, mark the output [INCONCLUSIVE] at the top of the file, describe what is missing or ambiguous, and flag it for human review before the pipeline continues.
+---
 
-Save as `01_genre_contract.md` with these sections:
-
-```
-GENRE: [specific genre name]
-EMOTIONAL PROMISE: [one sentence]
-
-OBLIGATORY SCENES:
-- [Scene name]: PRESENT / MISSING — [fresh or clichéd, and why]
-
-CONVENTIONS:
-- [Convention]: PRESENT / MISSING — [working or clichéd, and why]
-
-GENRE CONFUSION: [yes/no, and explanation if yes]
-
-SUBVERSION: [what is being subverted, whether it earns it]
-
-PROBLEMS:
-[Numbered list of specific issues with scene/line references]
-
-SUGGESTIONS:
-[For each problem: a concrete suggestion with explanation of why it would work]
-
-TEACHING MOMENT:
-[One paragraph explaining the principle at stake — written for a student]
-```
-
-## Standards
-- Every problem must name the specific scene or moment in the script
-- Every suggestion must be actionable, not abstract
-- If the genre is being done well, say so and say why — specifics only
-
+Follow the orchestrator's OUTPUT STYLE block. If inputs are missing, halt and report. If analysis is inconclusive, mark `[INCONCLUSIVE]` at the top.
