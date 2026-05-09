@@ -1,85 +1,55 @@
-# Skill 09 — Three Levels of Conflict Analysis
+# Skill 09 — Three Levels of Conflict
 
 ## Purpose
-McKee maps all conflict onto three levels: inner (within the character's own mind,
-body, or emotions), personal (between the character and those they are in close
-relationship with), and extra-personal (between the character and institutions,
-nature, systems, or the physical world). A multidimensional story puts the
-protagonist in conflict at all three levels simultaneously. Stories operating on
-only one level feel thin — even when they are technically well-constructed.
 
-The most resonant stories make the three levels MIRROR each other: solving the
-external problem requires solving the internal one, and vice versa.
+McKee maps all conflict onto three levels:
+
+- **Inner** — within the character's mind, body, or emotions
+- **Personal** — between the character and those they're in close relationship with
+- **Extra-personal** — between the character and institutions, nature, systems, or the physical world
+
+A multidimensional story puts the protagonist in conflict at all three levels simultaneously. The most resonant stories make the levels mirror each other: solving the external problem requires solving the internal one.
 
 ## Inputs
-- script.txt
-- 02_controlling_idea.md
-- 03_story_spine.md
+
+- `script.txt`
+- `02_controlling_idea.md`
+- `03_story_spine.md`
 
 ## Instructions
 
-If a required input file is missing or does not contain the expected content, halt immediately and report the missing input to the orchestrator — do not proceed with partial context.
+### Step 1 — Map inner conflict
+What within the protagonist opposes their desire? A belief, fear, wound, contradiction. Specific. Not "she has low self-esteem" but "she cannot receive care without interpreting it as a transaction." Is it as powerful as the external forces? Does it actively interfere with the want?
 
-### Step 1 — Map Inner Conflict
-What within the protagonist is opposing their desire?
-A belief, fear, wound, contradiction, or emotional block that works against
-what they consciously want. Be specific: not "she has low self-esteem" but
-"Florence cannot receive care without interpreting it as a transaction."
+### Step 2 — Map personal conflict
+Who in the close relationships opposes the desire? Intimate conflict — partner, parent, friend, rival. Specific. What does this person want that conflicts with the protagonist?
 
-Is this inner conflict as powerful as the external forces opposing her?
-Does it actively interfere with her pursuit of the want?
+For a short, personal conflict may compress or operate off-screen (e.g., texts, calls). Note if so.
 
-### Step 2 — Map Personal Conflict
-Who in the protagonist's close relationships is opposing their desire?
-This means intimate conflict — partner, parent, friend, rival — not strangers.
-What specifically does this person want that conflicts with the protagonist?
+### Step 3 — Map extra-personal conflict
+Forces beyond the personal: physical environment, social system, algorithm, world with its own logic.
 
-For a short: personal conflict may be compressed. Note if it is present but
-operating off-screen (e.g., the mother's calls in the opening).
+### Step 4 — Test for all three levels
+All three genuinely present? Any level significantly weaker? The weakest is usually where the story's dimensionality can be improved.
 
-### Step 3 — Map Extra-Personal Conflict
-What forces beyond the personal are opposing the protagonist?
-This could be: a physical environment, a social system, an algorithm, a world
-with its own logic and rules.
+### Step 5 — Test for mirroring
+Do the three levels reflect the same fundamental tension at different scales? Or are they unconnected problems? Best design: all three are expressions of one core problem.
 
-### Step 4 — Test for All Three Levels
-Are all three levels genuinely present?
-Is any level significantly weaker than the others?
-The weakest level is usually where the story's dimensionality can be improved.
+### Step 6 — Map the antagonist
+Does the antagonist function at all three levels, or only one? A one-dimensional antagonist is an obstacle, not a force.
 
-### Step 5 — Test for Mirroring
-Do the three levels reflect the same fundamental tension — just at different scales?
-Or do they feel like separate, unconnected problems?
-The best design: the inner conflict, personal conflict, and extra-personal conflict
-are all expressions of the same core problem.
-
-### Step 6 — Map the Antagonist
-Does the antagonist function at all three levels, or only one?
-A one-dimensional antagonist is an obstacle, not a force.
-
-## Output Format
-
-If the script does not provide enough material to complete this analysis confidently, mark the output [INCONCLUSIVE] at the top of the file, describe what is missing or ambiguous, and flag it for human review before the pipeline continues.
+## Output
 
 Save as `09_conflict_levels.md`:
 
-```
-INNER CONFLICT: [specific description]
-Strength: Strong / Present but weak / Absent
+- **INNER**, **PERSONAL**, **EXTRA-PERSONAL** — each with specific description and Strength: Strong / Present-but-weak / Absent / Compressed
+- **WEAKEST LEVEL** and why it matters
+- **MIRRORING** — yes/no/partial
+- **ANTAGONIST LEVELS** — which levels antagonist operates on
+- **PROBLEMS** — scene-specific
+- **SUGGESTIONS** — concrete strengthening per scene
+- **TEACHING MOMENT** — 4-part structure; obstacle vs. force; why one-dimensional conflict produces thin stories
 
-PERSONAL CONFLICT: [specific description + who]
-Strength: Strong / Present but weak / Absent / Compressed/off-screen
+---
 
-EXTRA-PERSONAL CONFLICT: [specific description]
-Strength: Strong / Present but weak / Absent
-
-WEAKEST LEVEL: [which one and why it matters]
-MIRRORING: [do the three levels reflect the same core tension? yes/no/partially]
-ANTAGONIST LEVELS: [which levels the antagonist operates on]
-
-PROBLEMS: [numbered, with scene references]
-SUGGESTIONS: [concrete — how to strengthen the weakest level in specific scenes]
-TEACHING MOMENT: [why one-dimensional conflict produces thin stories —
-the difference between an obstacle and a force]
-```
-
+Follow the orchestrator's OUTPUT STYLE block. If inputs are missing, halt and report. If analysis is inconclusive, mark `[INCONCLUSIVE]` at the top.
