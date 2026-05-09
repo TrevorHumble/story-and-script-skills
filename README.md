@@ -42,4 +42,12 @@ These files are gitignored by default (per-script content stays local).
 
 ## Status
 
-v1 — the original skill set. v2 in progress: standardized output style, intake step, formal director's notes lifecycle, structured decisions log, re-run protocol, and FigJam board generation. See `CHANGELOG.md` once published.
+**v2.0.0 — current.** Standardized output style across all skills, intake step, formal director's notes lifecycle, structured decisions log, re-run protocol with dependency map, FigJam board built automatically after the postmortem. See `CHANGELOG.md` for details. v1 is preserved in git history.
+
+## Quick start
+
+1. Drop `script.txt` and `beat_sheet.txt` in the project root.
+2. Copy `templates/intake_template.md` to `intake.md` and fill it in.
+3. Copy `templates/directors_notes_template.md` to `directors_notes.md` (carry over the Authorial Intent line from intake).
+4. Copy `templates/decisions_log_template.md` to `decisions_log.md`.
+5. Open `00_orchestrator.md` — it tells you everything else.
