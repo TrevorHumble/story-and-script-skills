@@ -38,6 +38,7 @@ End-to-end through-line:
 - **Surface problems, don't auto-propose solutions** — keeps the artist in the creative seat
 - **Mechanical staging descriptions** — value words (*intimate, powerful, devastating*) banned from agent prompts; concrete actions only
 - **Orchestrator pattern** — one master skill coordinates spawned sub-agents with isolated context
+- **Stay in tools that script natively, don't add ones that don't** — DaVinci Resolve free version cannot run headlessly (Studio-only feature). When tool A doesn't expose its API, the right move is often tool B inside the same ecosystem (Blender's VSE does the assembly job and is fully scriptable in the same Python environment as the renderer). Adding tools to the pipeline carries hidden cost; consolidating around tools with strong APIs collapses complexity.
 
 ## 5. Case study: *Catalysis*
 
