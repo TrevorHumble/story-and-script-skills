@@ -1,434 +1,244 @@
-# Script Analysis Orchestrator
-### Catalysis — Robert McKee Framework
+# 00 — Orchestrator (v2)
+
+The master skill. Spawns one agent per analysis skill, in order, against the screenplay. Manages staging, the director's notes lifecycle, stop protocols, the decisions log, and the final FigJam beat board.
+
+This file is read by Claude (or any agent runner) at the start of a pipeline run. Follow it like a runbook.
 
 ---
 
-## What This Is
+## Required setup before kickoff
 
-This orchestrator runs 24 skills in strict sequence to analyze a script against the Robert McKee framework. It is designed for a developing writer. Every analysis teaches, not just diagnoses. Where there is a problem, there is a suggestion. Where there is a suggestion, there is a reason.
+Project root must contain:
 
-You are the human in the loop. This is a dialogue, not a report.
+1. `script.txt` — the screenplay
+2. `beat_sheet.txt` — beat-level summary of the script
+3. `intake.md` — filled from `templates/intake_template.md`
+4. `directors_notes.md` — initialized from `templates/directors_notes_template.md` (Authorial Intent section copied from intake)
+5. `decisions_log.md` — initialized from `templates/decisions_log_template.md`
+6. `outputs/` directory — where all skill outputs land
 
-This process is iterative. After a rewrite, run it again from scratch or from any pit stop.
-
----
-
-## THIS ORCHESTRATOR SPAWNS AGENTS. IT DOES NOT RUN ANALYSIS ITSELF.
-
-You are a traffic controller. Not an analyst.
-
-Every skill is run by a **separately spawned agent** using the **Agent tool**. You do not write analysis. You do not summarize the script. You do not execute any skill inline in this window. If you find yourself producing script analysis — stop. You are doing it wrong.
-
-**Why this matters:** each spawned agent starts from zero. No memory of prior skills, no accumulated assumptions, no tendency to echo what earlier analysis said. Every skill reaches its own conclusions from its own inputs. If you run skills inline, they contaminate each other — the controlling idea colors how you read the act structure, the character work echoes the conflict work. You end up with one chain of reasoning instead of 23 independent examinations and one synthesis. The isolation is the method.
-
-**The rule:** one skill, one agent, one staging folder. Wait for completion. Confirm the output. Move on.
+If any of these are missing, halt and ask the user. Do not begin Skill 01 with partial setup.
 
 ---
 
-## PHASE 0 — PRE-FLIGHT
+## Agent spawning — the four non-negotiables
 
-Complete every step before spawning any agent.
+Every Agent call MUST:
 
-**Step 1 — Verify source files**
-Confirm these exist and contain readable content:
-- `C:\Users\thumb\OneDrive\Documents\Story Skills\script.txt`
-- `C:\Users\thumb\OneDrive\Documents\Story Skills\beat_sheet.txt`
+1. **Use `subagent_type: "general-purpose"`**
+2. **Pin `model: "opus"`** — pins Opus 4.6 regardless of the parent conversation's model. Without this, the agent inherits the parent's model and quality varies between runs.
+3. **Include the OUTPUT STYLE block (below) verbatim** in the prompt
+4. **Pass canonical staging from `directors_notes.md` as STAGING ONLY** — no intent or effect framing (see Show-Don't-Tell rule below)
 
-**Step 2 — Verify all 24 skill files**
-Confirm every file below exists in `C:\Users\thumb\OneDrive\Documents\Story Skills\`:
-```
-01_genre_contract.md        13_negation.md
-02_controlling_idea.md      14_subplot.md
-03_story_spine.md           15_scene_values.md
-04_image_system.md          16_rhythm.md
-05_act_structure.md         17_gap.md
-06_inciting_incident.md     18_text_subtext.md
-07_complications.md         19_beat_analysis.md
-08_crisis.md                20_on_the_nose.md
-09_conflict_levels.md       21_exposition.md
-10_true_character.md        22_said_unsaid.md
-11_character_dimension.md   23_trialogue.md
-12_antagonism.md            24_postmortem.md
-```
-
-**Step 3 — Create directories**
-```
-C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\
-C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\staging\
-```
-
-**Step 4 — State your plan**
-Tell the user:
-- Pre-flight passed (all files present, directories created)
-- "I will spawn agents using the Agent tool, one per skill, in sequence. I will not run any analysis inline."
-- The stop structure: 4 pit stops, 3 one-pager summaries
-- Which skill you will begin with
-
-Ask: "Ready to start?" Do not begin until the user says go.
+Stage inputs into `outputs/staging/skill_NN/` before each call. Pass file paths in the prompt.
 
 ---
 
-## PHASE 1 — RUNNING EACH SKILL
-
-This procedure applies to every skill, every time. No exceptions.
-
-### Step 1 — Stage the inputs
-
-Create a staging folder: `C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\staging\skill_[NN]\`
-
-Copy only the files listed for this skill (see Input Mapping below) into that folder. Nothing else goes in. The agent is instructed to read only from this folder.
-
-All files copy as-is — source files are already named `script.txt` and `beat_sheet.txt`.
-
-### Step 2 — Read the skill file
-
-Read `C:\Users\thumb\OneDrive\Documents\Story Skills\[skill_file].md` into your context.
-
-### Step 3 — Spawn the agent
-
-Call the Agent tool with this structure:
+## OUTPUT STYLE block — paste verbatim into every agent prompt
 
 ```
-Agent(
-  description: "Skill [N]: [Skill Name]",
-  subagent_type: "general-purpose",
-  prompt: """
-[PASTE FULL CONTENTS OF THE SKILL FILE HERE]
+## OUTPUT STYLE — required, non-negotiable
 
----
+1. **Be concise.** Tight prose. Short sentences. Lead with the finding. No throat-clearing, no multi-clause hedging, no restating the question before answering.
 
-Your input files are in this staging folder:
-C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\staging\skill_[NN]\
+2. **Define McKee jargon in plain English on first use.** When you first use a term like *controlling idea, true character, dimension, gap, beat, gerund, on-the-nose, the unsayable, scene value, negation of the negation, trialogue* — give a one-sentence plain-English definition first, then apply it. Don't assume the reader knows McKee.
 
-Read every file in that folder. Those are your only inputs.
-Do not read any files outside that folder.
+3. **Teaching moment must follow this 4-part structure:**
+   - **What this means in plain English** — define the principle without jargon
+   - **Why it matters in any story** — the general craft reason
+   - **How it operates in THIS script** — point at specific scenes/beats
+   - **Takeaway for the writer** — one or two actionable sentences
 
-Save your output to:
-C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\[output_filename].md
+4. **Problems and Suggestions: scene-specific and direct.** Each item starts with the scene name (and beat reference if relevant), names the issue in one sentence, then briefly explains the impact. Suggestions name a concrete intervention, not a vague direction.
 
-Standards:
-- Analyze THIS script specifically — name actual scenes, characters, and lines
-- Every problem states WHAT it is, WHERE it occurs, and WHY it is a problem
-- Every suggestion is concrete and scene-specific — not "add more conflict" but a specific instruction tied to a specific scene
-- Include a teaching moment explaining the underlying McKee principle for a developing writer
-- Be honest. Be critical. Be useful. This is a student learning the craft.
-- Never say "this is good" without saying what specifically makes it work and why.
-- Never say "this needs work" without saying exactly what work and how.
-- If you are uncertain about any finding, mark it [LOW CONFIDENCE] and briefly explain why.
-
-When done, report: "Skill [N] complete. Output saved to [full path]."
-"""
-)
-```
-
-### Step 4 — Wait
-
-Do not proceed. Do not spawn the next agent. Wait for the agent to report completion.
-
-### Step 5 — Verify the output
-
-Check that the output file exists at exactly this path:
-`C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\[output filename from mapping table]`
-
-Read it. Using the skill file's Output Format section as your spec, confirm the output contains every section defined there. If the file is missing, empty, incorrectly located, or missing required sections, re-spawn the agent with an explicit note identifying what is wrong and where to save the file.
-
-**Retry budget: maximum 3 attempts.** If the output is still invalid after 3 tries, halt. Tell the user which skill failed, what was wrong with the output, and wait for instruction before proceeding.
-
-If the output contains any [LOW CONFIDENCE] flags, surface them to the user before proceeding to the next skill. Ask whether to continue or revisit.
-
-### Step 6 — Check for a stop
-
-See the Stop Protocols section. If this skill has a stop marker, execute it before moving on.
-
-### Step 7 — Clear staging
-
-Delete `outputs\staging\skill_[NN]\` before creating the next staging folder.
-
----
-
-## INPUT MAPPING
-
-Each skill receives only the files listed here. Stage exactly these — nothing more.
-
-| Skill | Inputs | Output |
-|-------|--------|--------|
-| 01 Genre Contract | script.txt, beat_sheet.txt | 01_genre_contract.md |
-| 02 Controlling Idea | script.txt, 01_genre_contract.md | 02_controlling_idea.md |
-| 03 Story Spine | script.txt, 02_controlling_idea.md | 03_story_spine.md |
-| 04 Image System | script.txt, 02_controlling_idea.md, 03_story_spine.md | 04_image_system.md |
-| 05 Act Structure | script.txt, beat_sheet.txt, 02_controlling_idea.md, 03_story_spine.md | 05_act_structure.md |
-| 06 Inciting Incident | script.txt, beat_sheet.txt, 02_controlling_idea.md, 05_act_structure.md | 06_inciting_incident.md |
-| 07 Complications | script.txt, beat_sheet.txt, 02_controlling_idea.md, 05_act_structure.md | 07_complications.md |
-| 08 Crisis | script.txt, 02_controlling_idea.md, 05_act_structure.md, 07_complications.md | 08_crisis.md |
-| 09 Conflict Levels | script.txt, 02_controlling_idea.md, 03_story_spine.md | 09_conflict_levels.md |
-| 10 True Character | script.txt, 02_controlling_idea.md, 03_story_spine.md, 09_conflict_levels.md | 10_true_character.md |
-| 11 Character Dimension | script.txt, 10_true_character.md | 11_character_dimension.md |
-| 12 Antagonism | script.txt, 09_conflict_levels.md, 10_true_character.md, 11_character_dimension.md | 12_antagonism.md |
-| 13 Negation | script.txt, 02_controlling_idea.md, 05_act_structure.md | 13_negation.md |
-| 14 Subplot | script.txt, 02_controlling_idea.md, 05_act_structure.md, 13_negation.md | 14_subplot.md |
-| 15 Scene Values | script.txt, 02_controlling_idea.md | 15_scene_values.md |
-| 16 Rhythm | script.txt, beat_sheet.txt, 05_act_structure.md, 15_scene_values.md | 16_rhythm.md |
-| 17 Gap | script.txt, 15_scene_values.md | 17_gap.md |
-| 18 Text/Subtext | script.txt, 15_scene_values.md, 17_gap.md | 18_text_subtext.md |
-| 19 Beat Analysis | script.txt, 15_scene_values.md | 19_beat_analysis.md |
-| 20 On-the-Nose | script.txt, 19_beat_analysis.md | 20_on_the_nose.md |
-| 21 Exposition | script.txt, 19_beat_analysis.md, 20_on_the_nose.md | 21_exposition.md |
-| 22 Said/Unsaid | script.txt, 11_character_dimension.md, 19_beat_analysis.md | 22_said_unsaid.md |
-| 23 Trialogue | script.txt, 20_on_the_nose.md, 22_said_unsaid.md | 23_trialogue.md |
-| 24 Postmortem | see Postmortem section below | postmortem.md |
-
----
-
-## POSTMORTEM — SPECIAL HANDLING
-
-Skill 24 cannot use the standard staging procedure. It needs all 23 prior outputs plus the source files — too much content to paste into one prompt. Instead, spawn the postmortem agent with file paths only. The agent reads all files directly using its file tools.
-
-```
-Agent(
-  description: "Skill 24: Postmortem",
-  subagent_type: "general-purpose",
-  prompt: """
-[PASTE FULL CONTENTS OF 24_postmortem.md HERE]
-
----
-
-Read each of the following files before beginning your analysis:
-
-SOURCE FILES:
-- C:\Users\thumb\OneDrive\Documents\Story Skills\script.txt
-- C:\Users\thumb\OneDrive\Documents\Story Skills\beat_sheet.txt
-
-SKILL OUTPUTS:
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\01_genre_contract.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\02_controlling_idea.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\03_story_spine.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\04_image_system.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\05_act_structure.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\06_inciting_incident.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\07_complications.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\08_crisis.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\09_conflict_levels.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\10_true_character.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\11_character_dimension.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\12_antagonism.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\13_negation.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\14_subplot.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\15_scene_values.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\16_rhythm.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\17_gap.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\18_text_subtext.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\19_beat_analysis.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\20_on_the_nose.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\21_exposition.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\22_said_unsaid.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\23_trialogue.md
-
-SUMMARIES (if present):
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\summary_after_04.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\summary_after_13.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\summary_after_20.md
-
-Read all files above. Then complete every step in the skill file.
-
-Save your output to:
-C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\postmortem.md
-
-When done, report: "Skill 24 complete. Postmortem saved."
-"""
-)
+5. **Internal reasoning can be loose. The OUTPUT DOCUMENT must be clean.** The user reads the output, not the chain of thought.
 ```
 
 ---
 
-## STOP PROTOCOLS
+## Show-don't-tell — the rule that protects analysis integrity
 
-### 🔴 PIT STOP — After skills 02, 05, 11, 15
+When passing director's notes content into an agent prompt, **describe WHAT THE STAGING IS, not WHAT IT'S MEANT TO ACHIEVE.**
 
-After confirming the output file is saved:
-1. Stop. Do nothing further until the user responds.
-2. Read the output file
-3. Present key findings to the user in plain language — what was found, why it matters for the story
-4. Ask the user to confirm, push back, or revise
-5. If the user revises: edit the output file directly to reflect the agreed version. Note: editing an output file based on user instruction is the one permitted inline action at a pit stop. Generating new analysis is not.
-6. Do not spawn the next agent until the user explicitly says to continue
+- ❌ "Sebastian's slow finger gesture is intended to feel intimate and to make Florence's permission visible as a chosen act."
+- ✅ "Sebastian raises his thumb to Florence's lips. Holds. Eye contact. Florence's breathing visibly deepens. He slides his index finger in. He works the gum free."
 
-### ⚡ CHECK-IN — After skill 17
+**Why this matters.** Pre-loading intent corrupts analysis. An agent told "this is meant to feel intimate" will report back that it does — confirming the writer's hope rather than checking the page. An agent given only the staging will report what is actually legible.
 
-After confirming the 17_gap.md output is saved:
-1. Stop. Do not spawn the next agent.
-2. Read 16_rhythm.md and 17_gap.md
-3. Give the user a two-sentence summary of each: what was found in rhythm, what was found in gap analysis
-4. Ask: "Anything here you want to revisit before we continue into text/subtext and beat work?"
-5. If the user wants to discuss or revise: handle it — same rule as a pit stop: edit output files based on user instruction only, do not generate new analysis inline
-6. Once the user says continue, proceed to Skill 18
+**No value words** in agent-facing staging: avoid *powerful, intimate, rich, sophisticated, devastating, beautiful*, etc. Mechanical description only.
 
-This is a lighter stop than a full pit stop — the goal is to surface what was found in the uncheckpointed rhythm/gap stretch before the dialogue-level analysis begins, not to require deep revision.
+**No effect framing**: avoid *meant to, intended to, designed to, in order to, so that the audience...* The staging IS the intent; if it isn't legible, the staging needs to change.
+
+The user-facing director's notes follow the same rule (see `templates/directors_notes_template.md`). The orchestrator passes excerpts straight through.
 
 ---
 
-### 📋 ONE-PAGER SUMMARY — After skills 04, 13, 20
+## Director's notes lifecycle
 
-After confirming the output file is saved, spawn a summary agent:
+`directors_notes.md` is the canonical staging document. Treat it as authorial truth — it supersedes `script.txt` where they conflict.
 
-**After skill 04** — spawn with these paths:
-```
-Agent(
-  description: "One-Pager Summary after Skill 04",
-  subagent_type: "general-purpose",
-  prompt: """
-Read each of the following files:
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\01_genre_contract.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\02_controlling_idea.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\03_story_spine.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\04_image_system.md
+**When to read it:** before staging inputs for any skill. The agent's understanding of "what's on the page" must include the directors_notes revisions.
 
-Write a one-page summary. Bullets only. Include:
-- Key decisions established (genre, controlling idea, spine, image system)
-- Assumptions the analysis is operating on
-- Open questions or flags not yet resolved
+**When to update it:** at every pit stop / one-pager / check-in where the user makes a staging decision. Append a new revision section using the template format (mechanical description + source citation). Do not delete superseded sections — mark them as superseded so history is visible.
 
-Save to: C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\summary_after_04.md
-Report: "Summary complete."
-"""
-)
-```
+**What goes in:** decided staging changes only. Open problems live in the "Open Problems" section at the bottom — surface them but don't propose solutions until the user decides.
 
-**After skill 13** — spawn with these paths:
-```
-Agent(
-  description: "One-Pager Summary after Skill 13",
-  subagent_type: "general-purpose",
-  prompt: """
-Read each of the following files:
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\01_genre_contract.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\02_controlling_idea.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\03_story_spine.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\04_image_system.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\05_act_structure.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\06_inciting_incident.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\07_complications.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\08_crisis.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\09_conflict_levels.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\10_true_character.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\11_character_dimension.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\12_antagonism.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\13_negation.md
-
-Write a one-page summary. Bullets only. Include:
-- Key decisions established (structure, character, thematic depth)
-- Assumptions the analysis is operating on
-- Open questions or flags not yet resolved
-
-Save to: C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\summary_after_13.md
-Report: "Summary complete."
-"""
-)
-```
-
-**After skill 20** — spawn with these paths:
-```
-Agent(
-  description: "One-Pager Summary after Skill 20",
-  subagent_type: "general-purpose",
-  prompt: """
-Read each of the following files:
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\01_genre_contract.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\02_controlling_idea.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\03_story_spine.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\04_image_system.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\05_act_structure.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\06_inciting_incident.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\07_complications.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\08_crisis.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\09_conflict_levels.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\10_true_character.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\11_character_dimension.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\12_antagonism.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\13_negation.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\14_subplot.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\15_scene_values.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\16_rhythm.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\17_gap.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\18_text_subtext.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\19_beat_analysis.md
-- C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\20_on_the_nose.md
-
-Write a one-page summary. Bullets only. Include:
-- Key decisions established (scene-level craft, dialogue, beat work)
-- Assumptions the analysis is operating on
-- Open questions or flags not yet resolved
-
-Save to: C:\Users\thumb\OneDrive\Documents\Story Skills\outputs\summary_after_20.md
-Report: "Summary complete."
-"""
-)
-```
-
-Verify the summary: confirm the file exists at the expected path and contains all three required sections (decisions, assumptions, open flags). If missing or incomplete, re-spawn the summary agent once. Maximum 2 attempts — if it still fails, tell the user and wait for instruction.
-
-Present the summary to the user. Wait for go-ahead before proceeding to the next skill.
+**Source citation required.** Every revision section ends with `**Source:** [skill file or pit stop reference]`. This is how future-you traces why a decision was made.
 
 ---
 
-## SEQUENCE AND STOP MAP
+## Stop protocols
 
-| # | Skill | Stop |
-|---|-------|------|
-| 01 | Genre Contract | — |
-| 02 | Controlling Idea | 🔴 |
-| 03 | Story Spine | — |
-| 04 | Image System | 📋 |
-| 05 | Act Structure | 🔴 |
-| 06 | Inciting Incident | — |
-| 07 | Complications | — |
-| 08 | Crisis | — |
-| 09 | Conflict Levels | — |
-| 10 | True Character | — |
-| 11 | Character Dimension | 🔴 |
-| 12 | Antagonism | — |
-| 13 | Negation | 📋 |
-| 14 | Subplot | — |
-| 15 | Scene Values | 🔴 |
-| 16 | Rhythm | — |
-| 17 | Gap | ⚡ |
-| 18 | Text/Subtext | — |
-| 19 | Beat Analysis | — |
-| 20 | On-the-Nose | 📋 |
-| 21 | Exposition | — |
-| 22 | Said/Unsaid | — |
-| 23 | Trialogue | — |
-| 24 | Postmortem | — |
+Stops are where the user is brought into the loop. Do not skip them.
+
+| After skill | Type | What happens |
+|---|---|---|
+| 02 — Controlling Idea | Pit stop | Confirm controlling idea sentence; this anchors everything downstream |
+| 04 — Image System | One-pager | Brief summary of skills 01–04 findings |
+| 05 — Act Structure | Pit stop | Confirm act proportions and turning points |
+| 11 — Character Dimension | Pit stop | Confirm character dimensions before downstream dialogue analysis |
+| 13 — Negation of the Negation | One-pager | Brief summary of skills 05–13 findings |
+| 15 — Scene Values | Pit stop | Confirm scene-by-scene polarity before rhythm/gap analysis |
+| 17 — Gap | Check-in | Lighter touch — surface biggest open problems |
+| 20 — On-the-Nose | One-pager | Brief summary of skills 14–20 findings |
+| 24 — Postmortem | Final | Synthesis + FigJam board build |
+
+**At each stop:**
+1. Surface findings from the recent skills (problems, contradictions, what's working)
+2. Capture user decisions in `decisions_log.md`
+3. Update `directors_notes.md` with any new staging changes
+4. Confirm before continuing
 
 ---
 
-## TONE AND STANDARDS — PASS TO EVERY AGENT
+## Decisions log
 
-Include this block in every agent prompt:
+After each pit stop / check-in, append to `decisions_log.md`:
 
-- Analyze THIS script specifically — name actual scenes, characters, and lines
-- Every problem states WHAT it is, WHERE it occurs, and WHY it is a problem
-- Every suggestion is concrete and scene-specific — not "add more conflict" but a specific instruction tied to a specific scene
-- Include a teaching moment explaining the underlying McKee principle for a developing writer
-- Be honest. Be critical. Be useful. This is a student learning the craft.
-- Never say "this is good" without saying what specifically makes it work and why.
-- Never say "this needs work" without saying exactly what work and how.
-- If you are uncertain about any finding, mark it [LOW CONFIDENCE] and briefly explain why.
+- **Quick table row** for every decision (date, skill/stop, decision, mechanical change, source)
+- **Detailed entry** only when the table row can't carry the decision
+
+The orchestrator does this; the user does not have to ask.
 
 ---
 
-## RESUMING A BROKEN RUN
+## Re-run protocol — dependency map
 
-**Scenario: session ended mid-run, same draft, same script.**
-Before spawning any agent, check whether its expected output file already exists and is non-empty. If it does, skip that skill and move to the next. Report to the user which skills were skipped and which are being run fresh. All outputs in the folder are from the same draft — resuming mid-sequence is safe.
+When a directors_notes change overturns an upstream finding, downstream skills may need to rerun. Use this map.
+
+| If you change... | You must rerun... |
+|---|---|
+| Genre or controlling idea (01–02) | Everything from 03 onward |
+| Story spine or act structure (03, 05) | 06–09, 14, 15, 16 |
+| Inciting incident or crisis (06, 08) | 07, 15, 17 |
+| Conflict levels or character dimension (09, 10, 11) | 12, 18, 19, 22 |
+| Antagonism (12) | 14, 22, 23 |
+| Subplot (14) | 15, 16, 17 |
+| Scene values (15) | 16, 17, 18 |
+| Any dialogue scene staging | 18, 19, 20, 21, 22, 23 |
+| Final pass: any change | 24 (postmortem must rerun if anything earlier changed) |
+
+Re-run individual skills with the same staging-folder pattern as the first run. Mark the re-run output with a `## Re-run notice` block citing what triggered it.
 
 ---
 
-## AFTER A REWRITE
+## Surface problems, don't auto-propose solutions
 
-**Scenario: the script has been rewritten. This is a new draft.**
-Always start from Skill 01. Do not resume mid-sequence with a new script. Prior outputs were generated from a different draft — feeding them to new agents will contaminate the analysis. The only safe starting point for a new draft is the beginning.
+When reporting back to the user from agent outputs:
 
-1. Replace `script.txt` with the new draft
-2. Move `outputs\` to `outputs\draft_[N]\` to preserve prior analysis
-3. Create fresh `outputs\` and `outputs\staging\` directories
-4. Restart from Skill 01, or ask the user if they want to resume from a pit stop
+- **Surface the problems** the agent flagged — name the scene, the issue, the impact
+- **Do NOT auto-propose the agent's suggested solution** unless the user asks
+- The user is a thinking partner, not a passive consumer; let them see the problem before being handed a fix
+
+The agent's output document still contains its suggestions — the user can read them. The orchestrator's user-facing report leads with problems.
+
+---
+
+## Final artifact: FigJam beat board
+
+After Skill 24 completes, build the FigJam beat board automatically. Do not skip this — it is the single most useful artifact for the rewrite phase.
+
+### What it is
+
+A three-column FigJam board:
+
+- **LEFT — Suggestions Not Yet Taken**: every open problem from `postmortem.md`, color-coded by tier (Tier 1 = orange, Tiers 2–3 = yellow). Each card carries the problem name, scene reference, and one-paragraph mechanical description.
+- **MIDDLE — Beat Sheet (Restructured)**: every scene in the canonical restructured order from `directors_notes.md`, color-coded by status:
+  - 🟢 KEPT (green) — unchanged from page
+  - 🔵 CHANGED (blue) — revised; card describes what changed mechanically
+  - 🩷 NEW (pink) — added scene; card describes what's staged
+  - Act dividers (`ACT ONE`, `ACT TWO`, `ACT THREE`) as headers between groups
+- **RIGHT — Removed**: every scene/beat cut from the original draft, with the mechanical reason for the cut. Red cards.
+
+Cards are draggable. Sections are draggable. Saves to Figma cloud (cross-device automatic).
+
+### Build steps
+
+1. Confirm `postmortem.md` and `directors_notes.md` exist in `outputs/`.
+2. Call Figma `whoami` to get the user's planKey. If multiple plans exist and the user hasn't specified, ask which team.
+3. Call Figma `create_new_file` with `editorType: "figjam"`, `fileName: "[Working Title] — Beat Board"`, and the planKey.
+4. Call Figma `use_figma` with the file key and the population script. The script:
+   - Loads Inter Regular / Medium / Bold fonts
+   - Creates three sections (Suggestions Not Yet Taken / Beat Sheet — Restructured / Removed)
+   - For each card: `figma.createShapeWithText()`, `shapeType = 'ROUNDED_RECTANGLE'`, fill color per status, text = `${status}\n\n${title}\n\n${body}`, resize ~340×240
+   - Stacks cards vertically inside each section with consistent spacing (gap ~40, header gap ~100)
+   - Appends each card into its section via `section.appendChild(card)`
+   - Calls `figma.viewport.scrollAndZoomIntoView(allNodes)` at the end
+5. Return the FigJam URL to the user.
+
+### Color palette (RGB 0–1)
+
+| Status | Color | RGB |
+|---|---|---|
+| KEPT | light green | `{r: 0.74, g: 0.91, b: 0.74}` |
+| CHANGED | light blue | `{r: 0.70, g: 0.85, b: 0.97}` |
+| NEW | light pink | `{r: 1.00, g: 0.78, b: 0.91}` |
+| REMOVED | red | `{r: 0.97, g: 0.65, b: 0.65}` |
+| SUGGESTION-OPEN (T2/T3) | yellow | `{r: 1.00, g: 0.95, b: 0.55}` |
+| TIER-1 urgent | orange | `{r: 1.00, g: 0.78, b: 0.40}` |
+
+### Card content rules
+
+- **Card title**: scene name + number (e.g., "8 — Ballroom") OR problem name for suggestions
+- **Card body**: 1–3 sentences, mechanical description only (no value words, per the show-don't-tell rule)
+- **Status tag** at the top of each card: `[KEPT]`, `[CHANGED]`, `[NEW]`, `[REMOVED]`, `[TIER 1 · OPEN]`, etc.
+
+---
+
+## Skill list
+
+| # | Skill | Inputs | Stops |
+|---|---|---|---|
+| 01 | Genre Contract | script, beat_sheet, intake | |
+| 02 | Controlling Idea | script, 01 | **Pit stop** |
+| 03 | Story Spine | script, beat_sheet, 02 | |
+| 04 | Image System | script, 02, 03 | One-pager |
+| 05 | Act Structure | script, beat_sheet, 03 | **Pit stop** |
+| 06 | Inciting Incident | script, 03, 05 | |
+| 07 | Complications | script, 05, 06 | |
+| 08 | Crisis | script, 02, 05, 07 | |
+| 09 | Conflict Levels | script, 02, 03 | |
+| 10 | True Character | script, 02, 08, 09 | |
+| 11 | Character Dimension | script, 09, 10 | **Pit stop** |
+| 12 | Antagonism | script, 02, 09, 10, 11 | |
+| 13 | Negation of the Negation | script, 02, 12 | One-pager |
+| 14 | Subplot | script, 02, 03 | |
+| 15 | Scene Values | script, beat_sheet, 03, 05 | **Pit stop** |
+| 16 | Rhythm | script, beat_sheet, 05, 15 | |
+| 17 | Gap | script, 15 | Check-in |
+| 18 | Text and Subtext | script, 15, 17 | |
+| 19 | Beat Analysis | script, 15 | |
+| 20 | On-the-Nose | script, 19 | One-pager |
+| 21 | Exposition | script, 19, 20 | |
+| 22 | Said / Unsaid / Unsayable | script, 11, 19 | |
+| 23 | Trialogue | script, 20, 22 | |
+| 24 | Postmortem | all 23 outputs + summaries + script + beat_sheet + directors_notes | **Final + FigJam build** |
+
+---
+
+## Notes for the orchestrating agent
+
+- **Confirm before destructive actions.** Re-runs that overwrite outputs need a one-line check with the user.
+- **Don't summarize what the user can read.** When pointing the user at a finding, link the file and lead with the headline. The full detail is in the file.
+- **Trust the staging folder pattern.** Every skill reads its inputs from `outputs/staging/skill_NN/`. Do not pass long quoted excerpts in the prompt when a file path will do.
+- **Memory is your friend.** If you encounter feedback that should apply to future runs (output style, scope, tone), save it as a feedback memory.
