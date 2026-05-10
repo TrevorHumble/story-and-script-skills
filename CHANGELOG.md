@@ -4,6 +4,23 @@ All notable changes to this pipeline are tracked here. Format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2.3.0] — 2026-05-09
+
+### Added
+- **Mid-render Haiku 4.5 vision verification** added to Production Skill 02. Every 24th frame (configurable) is sampled to a vision LLM that flags render-correctness problems (black frames, missing characters, broken geometry). 3 consecutive vision failures abort the scene, save remaining render time for other scenes.
+- **EXR auto-conversion to temp PNG** for sample frames only. Full EXR sequences are preserved untouched for downstream compositing. Conversion uses Blender's native `bpy.data.images.save_render()` with the scene's color management view transform applied (handles HDR tonemap into 8-bit PNG).
+- **New CI-3.5 check-in** — artist reviews vision-flagged or aborted scenes before continuing.
+- **Two-tier failure handling**:
+  - Structural failure (file-system) = STOP whole run
+  - Vision failure = MARK SCENE FAILED, CONTINUE to next (could be false positive)
+  - Vision abort (3 in a row) = ABORT this scene's render, MARK ABORTED, CONTINUE
+- **Architectural change**: rendering primitive is now a Python frame-by-frame loop instead of `bpy.ops.render.render(animation=True)`. Enables mid-render verification, clean cancellation, and resume-from-frame-N.
+- **Failure modes table expanded** with vision-check-specific failures (prompt drifted into creative critique, EXR conversion lost data, multilayer EXR wrong active layer, repeated API timeouts).
+
+### Notes
+- v2.3.0 of Production Skill 02 describes the *design*. The deterministic Python implementation is tracked as a separate GitHub issue.
+- Vision supervisor is bounded to render correctness only. The boundary against creative critique is paper-worthy and explicitly defended in the skill's Standards and Teaching Moment.
+
 ## [2.2.0] — 2026-05-09
 
 ### Added
