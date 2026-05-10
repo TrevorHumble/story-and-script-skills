@@ -4,6 +4,23 @@ All notable changes to this pipeline are tracked here. Format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2.4.0] — 2026-05-10
+
+### Changed
+- **Render output folder structure** is now pass-isolated: `<project>/renders/<pass_type>/<pass_instance>/<scene_label>/`. Pass types: `animatic`, `lookdev`, `final`, `dailies`. Pass instance format: `<YYYY-MM-DD>_<version>_<engine>_<resolution>[_<note>]`. Multiple render passes (animatic v1, v2, lookdev, final) can coexist without overwriting each other.
+- **`render_scene.py` no longer overrides the saved engine.** Previous version had `ENGINE = "BLENDER_EEVEE_NEXT"` hardcoded that force-set the engine before every render. v2.4.0: default behavior respects the engine saved in the .blend file. Optional `--engine <NAME>` CLI arg overrides explicitly with logged confirmation.
+
+### Added
+- `_meta.json` schema written to each pass instance with engine, resolution, scene list, render times, vision-check summary.
+- Production Skill 02 v2.4.0 doc section on the new folder structure and engine policy with the lesson encoded: *scripts that silently override saved settings cause hard-to-diagnose bugs.*
+
+### Fixed
+- **Engine-override bug discovered during 2026-05-09 first render.** Artist requested Workbench animatic; script silently rendered EEVEE. Bug confirmed by render time (3 sec/frame is EEVEE territory at 540p, not Workbench) and visual identification by the artist. Python checks via `bpy.context.scene.render.engine` returned BLENDER_WORKBENCH because the script didn't save after the override, so post-render inspection showed the saved value, not the in-memory render-time value.
+
+### Notes
+- Issue #4 tracks the actual `render_scene.py` and `render_all.sh` code changes. Issues #1/#2/#3 (vision verification, SMS notifications, justification chain) build on the v2.4.0 foundation and are tracked as separate implementation work.
+- This is a breaking change to the render output path. The 2026-05-09 first-run renders were migrated into the new structure as `renders/animatic/2026-05-10_v1_eevee_540p/` (note: `eevee` reflects the actual engine used due to the bug, not the intended Workbench).
+
 ## [2.3.0] — 2026-05-09
 
 ### Added
