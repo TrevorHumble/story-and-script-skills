@@ -60,7 +60,7 @@ def main():
 
     cursor = 1
     for label, frames in sequences:
-        strip = seq_editor.sequences.new_image(
+        strip = seq_editor.strips.new_image(
             name=label,
             filepath=frames[0],
             channel=1,
@@ -78,9 +78,10 @@ def main():
     out_dir = os.path.join(os.path.dirname(output_blend), "animatic_out")
     os.makedirs(out_dir, exist_ok=True)
     scene.render.filepath = os.path.join(out_dir, "animatic_")
-    scene.render.image_settings.file_format = "FFMPEG"
-    scene.render.ffmpeg.format = "MPEG4"
-    scene.render.ffmpeg.codec = "H264"
+    # Output format defaults to PNG sequence; user changes to MP4/H.264 in GUI
+    # before rendering the final cut. (FFMPEG enum location changed in Blender 5.x;
+    # GUI handles this consistently across versions.)
+    scene.render.image_settings.file_format = "PNG"
 
     bpy.ops.wm.save_as_mainfile(filepath=output_blend)
     print(f"=== Saved to {output_blend}")
