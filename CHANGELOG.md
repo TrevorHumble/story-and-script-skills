@@ -4,6 +4,23 @@ All notable changes to this pipeline are tracked here. Format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2.1.0] — 2026-05-09
+
+### Added
+- **`production/`** — first production-side skill set. Skills that come *after* the McKee analysis pipeline ends, taking canonical artifacts (director's notes, postmortem, FigJam beat board) and turning them into the files an artist actually opens to start animating.
+- **`production/01_scene_scaffolding.md`** — reading the FigJam beat board and the director's notes, then creating one Blender scene file per beat with characters appended at default offset positions.
+- **`production/scripts/`** — reference implementations:
+  - `inspect_character.py` — recon a character `.blend` for collection/object names
+  - `append_characters.py` — parameterized character collection append
+  - `offset_characters.py` — translate appended collections to avoid overlap
+  - `render_scene.py` — per-scene headless render
+  - `render_all.sh` — batch wrapper for full-film headless render
+  - `assemble_vse.py` — stitch rendered sequences into a Blender VSE timeline
+
+### Notes
+- The production skill set is growing alongside an in-progress short film case study. Future skills (pose blocking aids, render queue management, sound design integration) will land as production stages are validated against real work.
+- Same design principles as the analysis skills apply — show-don't-tell, test before batching, mechanical operations only.
+
 ## [2.0.0] — 2026-05-09
 
 Major rewrite of the orchestrator and skills based on lessons from the first full pipeline run (Catalysis short film).

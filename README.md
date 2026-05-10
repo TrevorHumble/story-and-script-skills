@@ -42,7 +42,15 @@ These files are gitignored by default (per-script content stays local).
 
 ## Status
 
-**v2.0.0 — current.** Standardized output style across all skills, intake step, formal director's notes lifecycle, structured decisions log, re-run protocol with dependency map, FigJam board built automatically after the postmortem. See `CHANGELOG.md` for details. v1 is preserved in git history.
+**v2.1.0 — current.** Adds `production/` — skills that come after the McKee analysis pipeline ends, taking canonical artifacts and producing scaffolded Blender scene files an artist can open to start animating. See `CHANGELOG.md` for details. v1 and v2.0.0 are preserved in git history.
+
+## Production skills
+
+Once the analysis pipeline finishes, the [`production/`](production/) folder picks up. Currently covers:
+
+- [`production/01_scene_scaffolding.md`](production/01_scene_scaffolding.md) — reading the FigJam beat board and director's notes, then creating one Blender scene file per beat with characters appended at default offset positions.
+
+Reference Python and Bash live in [`production/scripts/`](production/scripts/). They are reference implementations — paths to your project, character rigs, and Blender executable need to be edited at the top of each.
 
 ## Quick start
 
