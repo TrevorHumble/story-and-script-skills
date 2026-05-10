@@ -1,5 +1,7 @@
 # Production Skill 02 — Headless Rendering, Mid-Render Verification, and VSE Assembly
 
+> **v2.4.0 update (2026-05-10):** Render output now uses a pass-isolated folder structure (`renders/<pass_type>/<pass_instance>/<scene_label>/`) so multiple passes can coexist without overwriting. The `render_scene.py` engine override has been removed — scripts now respect the engine saved in the .blend file unless explicitly overridden via `--engine`. See "Render output folder structure" section below.
+
 ## Purpose
 
 Take a folder of scaffolded, posed Blender scene files (the output of Production Skill 01 + the artist's posing work) and produce a deliverable video file. This is the final mechanical step before delivery: no creative decisions are made here; the artist's poses, cameras, and lighting are simply executed at render time, then stitched together in canonical order.
@@ -243,4 +245,89 @@ From the assembly project, render the timeline. Filename includes version + date
 
 Follow the orchestrator's OUTPUT STYLE block when reporting back to the user.
 
-**Implementation status:** v2.3.0 of this skill describes the design. The deterministic Python implementation (per-frame render loop, Haiku integration, EXR conversion, abort logic) is tracked as a separate GitHub issue.
+**Implementation status:** v2.3.0 of this skill describes the design. The deterministic Python implementation (per-frame render loop, Haiku integration, EXR conversion, abort logic) is tracked as a separate GitHub issue (#1, #3 builds on it; SMS notifications #2).
+
+---
+
+## Render output folder structure (v2.4.0)
+
+All rendered frames go under `<project>/renders/<pass_type>/<pass_instance>/<scene_label>/`. This keeps multiple render passes (animatic v1, v2, lookdev v1, final v1, etc.) isolated so later runs don't overwrite earlier ones.
+
+### Tree
+
+```
+<project>/
+├── renders/
+│   ├── animatic/
+│   │   ├── 2026-05-10_v1_workbench_540p/
+│   │   │   ├── _meta.json
+│   │   │   ├── _audit/
+│   │   │   │   └── Act.1-Scene.1-Apartment.md
+│   │   │   └── Act.1-Scene.1-Apartment/
+│   │   │       ├── Act.1-Scene.1-Apartment_0001.png
+│   │   │       └── ...
+│   │   └── 2026-05-13_v2_workbench_540p/
+│   ├── lookdev/
+│   ├── final/
+│   └── dailies/
+├── comps/                    # future (Production Skill 03)
+├── exports/                  # final assembled video deliverables
+│   └── animatic_v1_2026-05-15.mp4
+└── Scenes/Draft 2/           # source .blend files
+```
+
+### Pass type vocabulary
+
+- `animatic` — blocking pass, fast engine (Workbench), low resolution
+- `lookdev` — material/lighting development, EEVEE, intermediate resolution
+- `final` — production render, Cycles, full resolution, multilayer EXR for compositing
+- `dailies` — ad-hoc test renders that don't need full pass-folder treatment (default when `--pass-type` is not specified)
+
+### Pass instance naming
+
+Format: `<YYYY-MM-DD>_<version>_<engine>_<resolution>[_<note>]`
+
+Examples:
+- `2026-05-10_v1_workbench_540p`
+- `2026-05-13_v2_workbench_540p`
+- `2026-06-01_lookdev_v1_eevee_720p`
+- `2026-07-15_final_v1_cycles_1080p_exr`
+
+Date-first sorting keeps the folders in chronological order by default. The metadata in the folder name lets you identify any pass at a glance without opening files.
+
+### `_meta.json` schema
+
+Written to each pass instance after the batch completes:
+
+```json
+{
+  "pass_type": "animatic",
+  "version": "v1",
+  "engine": "BLENDER_WORKBENCH",
+  "resolution_x": 1920,
+  "resolution_y": 1080,
+  "resolution_percentage": 50,
+  "fps": 24,
+  "started_at": "2026-05-10T01:08:37Z",
+  "finished_at": "2026-05-10T01:55:00Z",
+  "scenes": [
+    {"label": "Act.1-Scene.1-Apartment", "frames": 200, "status": "COMPLETED"},
+    {"label": "Act.1-Scene.2-BakedBean", "frames": 250, "status": "COMPLETED"}
+  ],
+  "vision_check_summary": {"total_checks": 0, "flags": 0, "aborts": 0}
+}
+```
+
+### Engine override (v2.4.0)
+
+In v2.3.0, `render_scene.py` had a hardcoded `ENGINE = "BLENDER_EEVEE_NEXT"` that force-set the engine before every render. This caused the 2026-05-09 first-run renders to use EEVEE despite the artist intending Workbench. Bug fixed in v2.4.0:
+
+- **Default**: respect the engine saved in the .blend file. Do not modify it.
+- **Override**: optional `--engine <NAME>` CLI arg to `render_scene.py`. When passed, set the engine before render and log: `=== Engine override: WORKBENCH (was BLENDER_EEVEE_NEXT in file)`
+- **No override**: log `=== Using engine from file: <ENGINE>` so the artist sees what's actually being used
+
+**Lesson encoded:** scripts that silently override saved settings cause hard-to-diagnose bugs. The artist's saved configuration is canonical; tooling respects it unless explicitly told otherwise.
+
+---
+
+**Implementation status:** v2.4.0 documents the new folder structure and engine policy. The actual code changes to `render_scene.py` and `render_all.sh` are tracked as issue #4. Issues #1, #2, #3 (vision verification, SMS, justification chain) build on this v2.4.0 foundation.
