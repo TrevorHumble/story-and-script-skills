@@ -11,6 +11,7 @@ Same design principles as the analysis skills:
 ## Skills
 
 - [`01_scene_scaffolding.md`](01_scene_scaffolding.md) — Reading the FigJam beat board and the director's notes, then creating one Blender scene file per beat with characters appended at default offset positions.
+- [`02_render_and_assembly.md`](02_render_and_assembly.md) — Sequential per-scene headless rendering with verification, then Blender VSE assembly into a final video deliverable. Compositing is explicitly deferred to a future skill.
 
 ## Reference scripts
 

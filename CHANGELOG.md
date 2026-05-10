@@ -4,6 +4,15 @@ All notable changes to this pipeline are tracked here. Format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [2.2.0] — 2026-05-09
+
+### Added
+- **`production/02_render_and_assembly.md`** — sequential per-scene headless rendering with verification, then Blender VSE assembly into the final video deliverable. Five formal user check-ins (pre-flight, settings-lock, mid-render, pre-assembly, watch-v1). Compositing is explicitly deferred — animatic uses Workbench engine which needs no comp; final film compositing belongs in a future Production Skill 03.
+- Skill written first-time-run thorough: detailed failure-mode table, rationale for sequential-not-parallel rendering, explicit boundary defenses against in-skill compositing or audio work.
+
+### Notes
+- This skill is theoretical until run end-to-end on Catalysis (target: Thursday/Friday this week). It will be revised with real-world findings after first execution.
+
 ## [2.1.0] — 2026-05-09
 
 ### Added
