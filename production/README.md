@@ -1,6 +1,6 @@
 # Production Skills
 
-Skills that come **after** the McKee analysis pipeline ends. Where the analysis skills (`01_genre_contract.md` through `24_postmortem.md`) audit a script and surface its problems, the production skills take the canonical artifacts (director's notes, postmortem, FigJam beat board) and turn them into the files an artist actually opens to start animating.
+Skills that come **after** the story analysis pipeline ends. Where the analysis skills (`01_genre_contract.md` through `24_postmortem.md`) audit a script and surface its problems, the production skills take the canonical artifacts (director's notes, postmortem, FigJam beat board) and turn them into the files an artist actually opens to start animating.
 
 Same design principles as the analysis skills:
 - **Show-don't-tell.** Production scaffolding is mechanical translation. Never pre-pose, pre-camera, or pre-light. Those decisions are the artist's.
