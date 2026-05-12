@@ -63,4 +63,4 @@ Save as `postmortem.md`:
 
 Follow the orchestrator's OUTPUT STYLE block. If inputs are missing, halt and report. If analysis is inconclusive, mark `[INCONCLUSIVE]` at the top.
 
-**After this skill, the orchestrator builds the FigJam beat board.** See `00_orchestrator.md` "Final artifact: FigJam beat board" for the build steps.
+**After this skill, the orchestrator builds the FigJam beat board.** See [`dialogue.md`](../dialogue.md) "Final artifact: FigJam beat board" for the build steps.
