@@ -20,8 +20,8 @@ The following must exist before starting this phase:
 |---|---|
 | `script.txt`, `beat_sheet.txt` | User setup |
 | `outputs/02_controlling_idea.md` | [Foundation](foundation.md) — Skill 02 |
-| `outputs/03_story_spine.md` | [Foundation](foundation.md) — Skill 03 |
 | `outputs/05_act_structure.md` | [Foundation](foundation.md) — Skill 05 |
+| `outputs/13_negation.md` | [Character & Conflict](character.md) — Skill 13 |
 | `directors_notes.md` | Updated through Character phase |
 | `decisions_log.md` | Updated through Character phase |
 
@@ -33,8 +33,8 @@ If any are missing, halt and tell the user which prerequisite is absent.
 
 | # | Skill | Inputs | Stop |
 |---|---|---|---|
-| 14 | [Subplot](skills/14_subplot.md) | script, 02, 03 | |
-| 15 | [Scene Values](skills/15_scene_values.md) | script, beat_sheet, 03, 05 | **Pit stop** |
+| 14 | [Subplot](skills/14_subplot.md) | script, 02, 05, 13 | |
+| 15 | [Scene Values](skills/15_scene_values.md) | script, beat_sheet, 02 | **Pit stop** |
 | 16 | [Rhythm](skills/16_rhythm.md) | script, beat_sheet, 05, 15 | |
 | 17 | [Gap](skills/17_gap.md) | script, 15 | **Check-in** |
 

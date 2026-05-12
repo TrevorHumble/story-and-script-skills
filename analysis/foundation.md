@@ -33,9 +33,9 @@ If any of these are missing, halt and ask the user. Do not begin Skill 01 with p
 |---|---|---|---|
 | 01 | [Genre Contract](skills/01_genre_contract.md) | script, beat_sheet, intake | |
 | 02 | [Controlling Idea](skills/02_controlling_idea.md) | script, 01 | **Pit stop** |
-| 03 | [Story Spine](skills/03_story_spine.md) | script, beat_sheet, 02 | |
+| 03 | [Story Spine](skills/03_story_spine.md) | script, 02 | |
 | 04 | [Image System](skills/04_image_system.md) | script, 02, 03 | **One-pager** |
-| 05 | [Act Structure](skills/05_act_structure.md) | script, beat_sheet, 03 | **Pit stop** |
+| 05 | [Act Structure](skills/05_act_structure.md) | script, beat_sheet, 02, 03 | **Pit stop** |
 
 ---
 

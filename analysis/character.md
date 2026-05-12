@@ -18,8 +18,7 @@ The following must exist before starting this phase:
 
 | Prerequisite | Produced by |
 |---|---|
-| `script.txt` | User setup |
-| `outputs/01_genre_contract.md` | [Foundation](foundation.md) — Skill 01 |
+| `script.txt`, `beat_sheet.txt` | User setup |
 | `outputs/02_controlling_idea.md` | [Foundation](foundation.md) — Skill 02 |
 | `outputs/03_story_spine.md` | [Foundation](foundation.md) — Skill 03 |
 | `outputs/05_act_structure.md` | [Foundation](foundation.md) — Skill 05 |
@@ -35,14 +34,14 @@ If any are missing, halt and tell the user which prerequisite is absent.
 
 | # | Skill | Inputs | Stop |
 |---|---|---|---|
-| 06 | [Inciting Incident](skills/06_inciting_incident.md) | script, 03, 05 | |
-| 07 | [Complications](skills/07_complications.md) | script, 05, 06 | |
+| 06 | [Inciting Incident](skills/06_inciting_incident.md) | script, beat_sheet, 02, 05 | |
+| 07 | [Complications](skills/07_complications.md) | script, beat_sheet, 02, 05 | |
 | 08 | [Crisis](skills/08_crisis.md) | script, 02, 05, 07 | |
 | 09 | [Conflict Levels](skills/09_conflict_levels.md) | script, 02, 03 | |
-| 10 | [True Character](skills/10_true_character.md) | script, 02, 08, 09 | |
-| 11 | [Character Dimension](skills/11_character_dimension.md) | script, 09, 10 | **Pit stop** |
+| 10 | [True Character](skills/10_true_character.md) | script, 02, 03, 09 | |
+| 11 | [Character Dimension](skills/11_character_dimension.md) | script, 10 | **Pit stop** |
 | 12 | [Antagonism](skills/12_antagonism.md) | script, 02, 09, 10, 11 | |
-| 13 | [Negation of the Negation](skills/13_negation.md) | script, 02, 12 | **One-pager** |
+| 13 | [Negation of the Negation](skills/13_negation.md) | script, 02, 05 | **One-pager** |
 
 ---
 
