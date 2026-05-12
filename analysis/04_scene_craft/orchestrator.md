@@ -23,12 +23,10 @@ The following must exist before starting this phase:
 | `outputs/05_act_structure.md` | [Foundation](../01_foundation/orchestrator.md) — Skill 05 |
 | `outputs/11_character_dimension.md` | [Character](../03_character/orchestrator.md) — Skill 11 |
 | `outputs/13_negation.md` | [Character](../03_character/orchestrator.md) — Skill 13 |
-| `outputs/15_scene_values.md` | Produced within this phase — Skill 15 |
-| `outputs/17_gap.md` | Produced within this phase — Skill 17 |
 | `directors_notes.md` | Updated through Character phase |
 | `decisions_log.md` | Updated through Character phase |
 
-If any external prerequisites are missing, halt and tell the user which prerequisite is absent.
+If any are missing, halt and tell the user which prerequisite is absent.
 
 ---
 

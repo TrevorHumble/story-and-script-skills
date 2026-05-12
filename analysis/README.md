@@ -4,9 +4,11 @@ A 24-skill Robert McKee story analysis pipeline for screenplays. AI agents run s
 
 This process is deliberately multi-hour. You can't automate art about the human condition, but you can give storytellers better tools. The agents surface problems and teach craft concepts in plain English; the stops are where the real work happens — the writer decides what to change, what to keep, and what to investigate further.
 
-## Phases
+## How to use
 
-The analysis is split into five phases, each focused on one dimension of craft. Run them in order, or enter at any phase if you already have the prerequisites. Start with [`pipeline.md`](pipeline.md) for a full run.
+Open [`pipeline.md`](pipeline.md) — it's the parent orchestrator that ties together all five analysis phases, explains prerequisites, and handles cross-phase coordination. Each phase folder below contains its own `orchestrator.md` alongside its skill files.
+
+## Phases
 
 | Phase | Folder | Skills | Question |
 |---|---|---|---|
@@ -15,8 +17,6 @@ The analysis is split into five phases, each focused on one dimension of craft. 
 | 3 | [Character](03_character/) | 09–13 | WHO are these people under pressure? |
 | 4 | [Scene Craft](04_scene_craft/) | 14–23 | HOW do individual scenes work? |
 | 5 | [Synthesis](05_synthesis/) | 24 + FigJam | What's the verdict? |
-
-Each folder contains an `orchestrator.md` alongside its skill files.
 
 ## The 24 skills
 
@@ -46,23 +46,3 @@ Each folder contains an `orchestrator.md` alongside its skill files.
 | 22 | Said / Unsaid / Unsayable | Scene Craft |
 | 23 | Trialogue | Scene Craft |
 | 24 | Postmortem | Synthesis |
-
-## Stop protocols
-
-Stops are where the writer is brought into the loop. Do not skip them.
-
-| After skill | Type | What happens |
-|---|---|---|
-| 02 — Controlling Idea | Pit stop | Confirm controlling idea sentence |
-| 04 — Image System | One-pager | Skills 01–04 summary |
-| 05 — Act Structure | Pit stop | Confirm act proportions and turning points |
-| 11 — Character Dimension | Pit stop | Confirm character dimensions |
-| 13 — Negation | One-pager | Skills 05–13 summary |
-| 15 — Scene Values | Pit stop | Confirm scene-by-scene polarity |
-| 17 — Gap | Check-in | Surface biggest open problems |
-| 20 — On-the-Nose | One-pager | Skills 14–20 summary |
-| 24 — Postmortem | Final | Synthesis + FigJam board build |
-
-## What comes after analysis
-
-The analysis pipeline produces a FigJam beat board and finalized director's notes. From there, [Scene Scaffolding](../scaffolding/orchestrator.md) translates the beat board into Blender scene files for animation production.

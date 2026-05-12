@@ -24,12 +24,12 @@ Read [`common.md`](../common.md) before proceeding. It contains agent spawning r
 Phase 1 (Foundation)
   ↓
 Phase 2 (Narrative Arc)     Phase 3 (Character)
-  needs: 02, 05                needs: 02, 03
+  needs: 02, 05                needs: 02, 03, 05
   ↓                            ↓
   └──────────┬─────────────────┘
              ↓
 Phase 4 (Scene Craft)
-  needs: 02, 05, 11, 13, 15
+  needs: 02, 05, 11, 13
              ↓
 Phase 5 (Synthesis)
   needs: all prior outputs
