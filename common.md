@@ -1,23 +1,6 @@
-# 00 — Orchestrator (v2)
+# Common Infrastructure — Story Pipeline
 
-The master skill. Spawns one agent per analysis skill, in order, against the screenplay. Manages staging, the director's notes lifecycle, stop protocols, the decisions log, and the final FigJam beat board.
-
-This file is read by Claude (or any agent runner) at the start of a pipeline run. Follow it like a runbook.
-
----
-
-## Required setup before kickoff
-
-Project root must contain:
-
-1. `script.txt` — the screenplay
-2. `beat_sheet.txt` — beat-level summary of the script
-3. `intake.md` — filled from `templates/intake_template.md`
-4. `directors_notes.md` — initialized from `templates/directors_notes_template.md` (Authorial Intent section copied from intake)
-5. `decisions_log.md` — initialized from `templates/decisions_log_template.md`
-6. `outputs/` directory — where all skill outputs land
-
-If any of these are missing, halt and ask the user. Do not begin Skill 01 with partial setup.
+Read this file before running any orchestrator. It contains rules and protocols that apply to all phases of the pipeline.
 
 ---
 
@@ -60,8 +43,8 @@ Stage inputs into `outputs/staging/skill_NN/` before each call. Pass file paths 
 
 When passing director's notes content into an agent prompt, **describe WHAT THE STAGING IS, not WHAT IT'S MEANT TO ACHIEVE.**
 
-- ❌ "Sebastian's slow finger gesture is intended to feel intimate and to make Florence's permission visible as a chosen act."
-- ✅ "Sebastian raises his thumb to Florence's lips. Holds. Eye contact. Florence's breathing visibly deepens. He slides his index finger in. He works the gum free."
+- No: "Sebastian's slow finger gesture is intended to feel intimate and to make Florence's permission visible as a chosen act."
+- Yes: "Sebastian raises his thumb to Florence's lips. Holds. Eye contact. Florence's breathing visibly deepens. He slides his index finger in. He works the gum free."
 
 **Why this matters.** Pre-loading intent corrupts analysis. An agent told "this is meant to feel intimate" will report back that it does — confirming the writer's hope rather than checking the page. An agent given only the staging will report what is actually legible.
 
@@ -87,23 +70,10 @@ The user-facing director's notes follow the same rule (see `templates/directors_
 
 ---
 
-## Stop protocols
+## Stop protocol behavior
 
-Stops are where the user is brought into the loop. Do not skip them.
+At each stop (pit stop, one-pager, check-in):
 
-| After skill | Type | What happens |
-|---|---|---|
-| 02 — Controlling Idea | Pit stop | Confirm controlling idea sentence; this anchors everything downstream |
-| 04 — Image System | One-pager | Brief summary of skills 01–04 findings |
-| 05 — Act Structure | Pit stop | Confirm act proportions and turning points |
-| 11 — Character Dimension | Pit stop | Confirm character dimensions before downstream dialogue analysis |
-| 13 — Negation of the Negation | One-pager | Brief summary of skills 05–13 findings |
-| 15 — Scene Values | Pit stop | Confirm scene-by-scene polarity before rhythm/gap analysis |
-| 17 — Gap | Check-in | Lighter touch — surface biggest open problems |
-| 20 — On-the-Nose | One-pager | Brief summary of skills 14–20 findings |
-| 24 — Postmortem | Final | Synthesis + FigJam board build |
-
-**At each stop:**
 1. Surface findings from the recent skills (problems, contradictions, what's working)
 2. Capture user decisions in `decisions_log.md`
 3. Update `directors_notes.md` with any new staging changes
@@ -138,6 +108,15 @@ When a directors_notes change overturns an upstream finding, downstream skills m
 | Any dialogue scene staging | 18, 19, 20, 21, 22, 23 |
 | Final pass: any change | 24 (postmortem must rerun if anything earlier changed) |
 
+### Cross-phase re-runs
+
+If a re-run triggers skills in a different phase than the one you're currently in:
+
+1. Complete the current phase's re-runs first
+2. Note which downstream skills in other phases need re-running
+3. Tell the user: "[Phase name] skills [list] need to rerun because [upstream change]. Run that phase's orchestrator next."
+4. When starting the downstream phase for a re-run, skip the full prerequisite check — the user is continuing from a known state. Instead, verify only that the specific changed upstream outputs exist.
+
 Re-run individual skills with the same staging-folder pattern as the first run. Mark the re-run output with a `## Re-run notice` block citing what triggered it.
 
 ---
@@ -151,88 +130,6 @@ When reporting back to the user from agent outputs:
 - The user is a thinking partner, not a passive consumer; let them see the problem before being handed a fix
 
 The agent's output document still contains its suggestions — the user can read them. The orchestrator's user-facing report leads with problems.
-
----
-
-## Final artifact: FigJam beat board
-
-After Skill 24 completes, build the FigJam beat board automatically. Do not skip this — it is the single most useful artifact for the rewrite phase.
-
-### What it is
-
-A three-column FigJam board:
-
-- **LEFT — Suggestions Not Yet Taken**: every open problem from `postmortem.md`, color-coded by tier (Tier 1 = orange, Tiers 2–3 = yellow). Each card carries the problem name, scene reference, and one-paragraph mechanical description.
-- **MIDDLE — Beat Sheet (Restructured)**: every scene in the canonical restructured order from `directors_notes.md`, color-coded by status:
-  - 🟢 KEPT (green) — unchanged from page
-  - 🔵 CHANGED (blue) — revised; card describes what changed mechanically
-  - 🩷 NEW (pink) — added scene; card describes what's staged
-  - Act dividers (`ACT ONE`, `ACT TWO`, `ACT THREE`) as headers between groups
-- **RIGHT — Removed**: every scene/beat cut from the original draft, with the mechanical reason for the cut. Red cards.
-
-Cards are draggable. Sections are draggable. Saves to Figma cloud (cross-device automatic).
-
-### Build steps
-
-1. Confirm `postmortem.md` and `directors_notes.md` exist in `outputs/`.
-2. Call Figma `whoami` to get the user's planKey. If multiple plans exist and the user hasn't specified, ask which team.
-3. Call Figma `create_new_file` with `editorType: "figjam"`, `fileName: "[Working Title] — Beat Board"`, and the planKey.
-4. Call Figma `use_figma` with the file key and the population script. The script:
-   - Loads Inter Regular / Medium / Bold fonts
-   - Creates three sections (Suggestions Not Yet Taken / Beat Sheet — Restructured / Removed)
-   - For each card: `figma.createShapeWithText()`, `shapeType = 'ROUNDED_RECTANGLE'`, fill color per status, text = `${status}\n\n${title}\n\n${body}`, resize ~340×240
-   - Stacks cards vertically inside each section with consistent spacing (gap ~40, header gap ~100)
-   - Appends each card into its section via `section.appendChild(card)`
-   - Calls `figma.viewport.scrollAndZoomIntoView(allNodes)` at the end
-5. Return the FigJam URL to the user.
-
-### Color palette (RGB 0–1)
-
-| Status | Color | RGB |
-|---|---|---|
-| KEPT | light green | `{r: 0.74, g: 0.91, b: 0.74}` |
-| CHANGED | light blue | `{r: 0.70, g: 0.85, b: 0.97}` |
-| NEW | light pink | `{r: 1.00, g: 0.78, b: 0.91}` |
-| REMOVED | red | `{r: 0.97, g: 0.65, b: 0.65}` |
-| SUGGESTION-OPEN (T2/T3) | yellow | `{r: 1.00, g: 0.95, b: 0.55}` |
-| TIER-1 urgent | orange | `{r: 1.00, g: 0.78, b: 0.40}` |
-
-### Card content rules
-
-- **Card title**: scene name + number (e.g., "8 — Ballroom") OR problem name for suggestions
-- **Card body**: 1–3 sentences, mechanical description only (no value words, per the show-don't-tell rule)
-- **Status tag** at the top of each card: `[KEPT]`, `[CHANGED]`, `[NEW]`, `[REMOVED]`, `[TIER 1 · OPEN]`, etc.
-
----
-
-## Skill list
-
-| # | Skill | Inputs | Stops |
-|---|---|---|---|
-| 01 | Genre Contract | script, beat_sheet, intake | |
-| 02 | Controlling Idea | script, 01 | **Pit stop** |
-| 03 | Story Spine | script, beat_sheet, 02 | |
-| 04 | Image System | script, 02, 03 | One-pager |
-| 05 | Act Structure | script, beat_sheet, 03 | **Pit stop** |
-| 06 | Inciting Incident | script, 03, 05 | |
-| 07 | Complications | script, 05, 06 | |
-| 08 | Crisis | script, 02, 05, 07 | |
-| 09 | Conflict Levels | script, 02, 03 | |
-| 10 | True Character | script, 02, 08, 09 | |
-| 11 | Character Dimension | script, 09, 10 | **Pit stop** |
-| 12 | Antagonism | script, 02, 09, 10, 11 | |
-| 13 | Negation of the Negation | script, 02, 12 | One-pager |
-| 14 | Subplot | script, 02, 03 | |
-| 15 | Scene Values | script, beat_sheet, 03, 05 | **Pit stop** |
-| 16 | Rhythm | script, beat_sheet, 05, 15 | |
-| 17 | Gap | script, 15 | Check-in |
-| 18 | Text and Subtext | script, 15, 17 | |
-| 19 | Beat Analysis | script, 15 | |
-| 20 | On-the-Nose | script, 19 | One-pager |
-| 21 | Exposition | script, 19, 20 | |
-| 22 | Said / Unsaid / Unsayable | script, 11, 19 | |
-| 23 | Trialogue | script, 20, 22 | |
-| 24 | Postmortem | all 23 outputs + summaries + script + beat_sheet + directors_notes | **Final + FigJam build** |
 
 ---
 
