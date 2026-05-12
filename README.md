@@ -8,7 +8,7 @@ This process is deliberately multi-hour. You can't automate art about the human 
 
 | Phase | Folder | What it does |
 |---|---|---|
-| **Analysis** | [`analysis/`](analysis/) | 24 McKee-based skills across 4 orchestrated phases — examines genre, character, structure, dialogue. Produces a FigJam beat board and finalized director's notes. |
+| **Analysis** | [`analysis/`](analysis/) | 24 McKee-based skills across 5 orchestrated phases — examines foundation, narrative arc, character, scene craft. Ends with a synthesis postmortem and FigJam beat board. |
 | **Scene Scaffolding** | [`scaffolding/`](scaffolding/) | Reads the beat board and director's notes, creates one Blender scene file per beat with characters appended. Mechanical only — the artist poses, lights, and cameras. |
 | **Render & Assembly** | [Blender-Skills repo](https://github.com/TrevorHumble/Blender-Skills) | Takes posed scenes and produces a video deliverable. Headless rendering with mid-render vision verification, VSE assembly. Lives in the Blender-Skills repo. |
 
@@ -20,7 +20,7 @@ Each phase can be run independently. Someone might bring their own script and ju
 2. Copy `templates/intake_template.md` to `intake.md` and fill it in.
 3. Copy `templates/directors_notes_template.md` to `directors_notes.md` (carry over the Authorial Intent line from intake).
 4. Copy `templates/decisions_log_template.md` to `decisions_log.md`.
-5. Start with [`analysis/foundation.md`](analysis/foundation.md) — it tells you everything else.
+5. Start with [`analysis/pipeline.md`](analysis/pipeline.md) — the parent orchestrator that ties together all five analysis phases.
 
 ## Shared infrastructure
 
@@ -29,19 +29,22 @@ Each phase can be run independently. Someone might bring their own script and ju
 ## Repository structure
 
 ```
-common.md                    # Shared infrastructure
-analysis/                    # 24-skill McKee analysis (4 phases)
-  foundation.md              #   Phase 1: skills 01-05
-  character.md               #   Phase 2: skills 06-13
-  structure_pacing.md        #   Phase 3: skills 14-17
-  dialogue.md                #   Phase 4: skills 18-24 + FigJam
-  skills/                    #   The 24 skill files
-scaffolding/                 # Scene scaffolding
-  orchestrator.md            #   Workflow orchestration
-  01_scene_scaffolding.md    #   The scaffolding skill
-  scripts/                   #   Reference Python scripts
-templates/                   # Project setup templates
+common.md                         # Shared infrastructure
+analysis/                         # 24-skill McKee analysis (5 phases)
+  pipeline.md                     #   Parent orchestrator
+  01_foundation/                  #   Phase 1: skills 01-05
+  02_narrative_arc/               #   Phase 2: skills 06-08
+  03_character/                   #   Phase 3: skills 09-13
+  04_scene_craft/                 #   Phase 4: skills 14-23
+  05_synthesis/                   #   Phase 5: skill 24 + FigJam
+scaffolding/                      # Scene scaffolding
+  orchestrator.md                 #   Workflow orchestration
+  01_scene_scaffolding.md         #   The scaffolding skill
+  scripts/                        #   Reference Python scripts
+templates/                        # Project setup templates
 ```
+
+Each phase folder contains an `orchestrator.md` alongside its skill files.
 
 ## Companion repo
 

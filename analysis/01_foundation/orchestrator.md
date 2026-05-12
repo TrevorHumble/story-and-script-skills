@@ -1,6 +1,6 @@
 # Analysis Phase 1 — Foundation (Skills 01–05)
 
-> Part of the [Story Pipeline](../README.md). You can run this phase independently if you have the prerequisites below, or as the first phase of a full pipeline run.
+> Phase 1 of 5 in the [Analysis Pipeline](../pipeline.md). You can run this phase independently if you have the prerequisites below, or as the first phase of a full pipeline run.
 
 This phase establishes what the story is *about*: the genre contract with the audience, the controlling idea, the protagonist's through-line, the visual motifs, and the act structure. Every downstream phase builds on decisions made here.
 
@@ -8,7 +8,7 @@ This phase establishes what the story is *about*: the genre contract with the au
 
 ## Read first
 
-Read [`common.md`](../common.md) before proceeding. It contains agent spawning rules, the OUTPUT STYLE block, show-don't-tell staging rules, and the director's notes / decisions log lifecycle.
+Read [`common.md`](../../common.md) before proceeding. It contains agent spawning rules, the OUTPUT STYLE block, show-don't-tell staging rules, and the director's notes / decisions log lifecycle.
 
 ---
 
@@ -31,11 +31,11 @@ If any of these are missing, halt and ask the user. Do not begin Skill 01 with p
 
 | # | Skill | Inputs | Stop |
 |---|---|---|---|
-| 01 | [Genre Contract](skills/01_genre_contract.md) | script, beat_sheet, intake | |
-| 02 | [Controlling Idea](skills/02_controlling_idea.md) | script, 01 | **Pit stop** |
-| 03 | [Story Spine](skills/03_story_spine.md) | script, 02 | |
-| 04 | [Image System](skills/04_image_system.md) | script, 02, 03 | **One-pager** |
-| 05 | [Act Structure](skills/05_act_structure.md) | script, beat_sheet, 02, 03 | **Pit stop** |
+| 01 | [Genre Contract](01_genre_contract.md) | script, beat_sheet, intake | |
+| 02 | [Controlling Idea](02_controlling_idea.md) | script, 01 | **Pit stop** |
+| 03 | [Story Spine](03_story_spine.md) | script, 02 | |
+| 04 | [Image System](04_image_system.md) | script, 02, 03 | **One-pager** |
+| 05 | [Act Structure](05_act_structure.md) | script, beat_sheet, 02, 03 | **Pit stop** |
 
 ---
 
@@ -51,7 +51,7 @@ Brief summary of skills 01–04 findings. Surface what's working, what's contrad
 
 ### After Skill 05 — Pit stop: Act Structure
 
-Confirm act proportions and turning points. These are the structural pillars the character and scene-level analysis will build on.
+Confirm act proportions and turning points. These are the structural pillars the narrative arc and character analysis will build on.
 
 ---
 
@@ -64,4 +64,4 @@ After this phase completes, the following artifacts exist:
 - `directors_notes.md` — updated with decisions from this phase's stops
 - `decisions_log.md` — updated
 
-**Next phase:** [Character & Conflict](character.md) — who the characters are under pressure.
+**Next phase:** [Narrative Arc](../02_narrative_arc/orchestrator.md) — how the story's events escalate.

@@ -20,7 +20,7 @@ The following must exist before starting this phase:
 
 | Prerequisite | Produced by |
 |---|---|
-| FigJam beat board (URL or screenshot) | [Analysis — Dialogue](../analysis/dialogue.md) phase, or built independently |
+| FigJam beat board (URL or screenshot) | [Analysis — Synthesis](../analysis/05_synthesis/orchestrator.md) phase, or built independently |
 | `directors_notes.md` | Analysis pipeline, or authored independently |
 | Character source `.blend` files | Artist's rig library |
 | A starting `.blend` template | Artist's preferred scene starting point |

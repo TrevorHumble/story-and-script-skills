@@ -4,6 +4,23 @@ All notable changes to this pipeline are tracked here. Format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [4.0.0] — 2026-05-12
+
+### Changed
+- **Analysis reorganized into 5 phases** (was 4). Skills regrouped by craft dimension:
+  - **Phase 1 — Foundation** (01–05): unchanged
+  - **Phase 2 — Narrative Arc** (06–08): plot architecture, split from old "Character & Conflict"
+  - **Phase 3 — Character** (09–13): character analysis, split from old "Character & Conflict"
+  - **Phase 4 — Scene Craft** (14–23): merged old "Structure & Pacing" + dialogue skills from "Dialogue & Surface"
+  - **Phase 5 — Synthesis** (24 + FigJam): postmortem and beat board, split from old "Dialogue & Surface"
+- **Orchestrators co-located with skills.** Each phase is now a numbered folder (`01_foundation/`, `02_narrative_arc/`, etc.) containing its `orchestrator.md` alongside its skill files. Replaces the flat `analysis/skills/` directory.
+- **Parent orchestrator added** (`analysis/pipeline.md`): ties together all five phases, documents phase dependencies, cross-phase re-run instructions, and single-phase entry.
+- **FigJam build instructions** moved from dialogue orchestrator to `analysis/05_synthesis/orchestrator.md` where they belong — the beat board is a pipeline-wide deliverable, not a dialogue artifact.
+
+### Removed
+- `analysis/foundation.md`, `analysis/character.md`, `analysis/structure_pacing.md`, `analysis/dialogue.md` — replaced by phase-folder orchestrators.
+- `analysis/skills/` flat directory — skills now live in their phase folders.
+
 ## [3.0.0] — 2026-05-11
 
 ### Changed
