@@ -4,6 +4,31 @@ All notable changes to this pipeline are tracked here. Format follows [Keep a Ch
 
 ## [Unreleased]
 
+## [3.0.0] — 2026-05-11
+
+### Changed
+- **Pipeline restructured into independent phases.** The monolithic `00_orchestrator.md` is replaced by phase-specific orchestrators, each focused on one dimension of craft. The writer works through one phase at a time, making decisions at each stop, and comes back later for the next.
+- **Analysis skills** moved from root into `analysis/skills/`. Four orchestrators in `analysis/`: `foundation.md` (skills 01–05), `character.md` (skills 06–13), `structure_pacing.md` (skills 14–17), `dialogue.md` (skills 18–24 + FigJam build).
+- **Scene scaffolding** moved from `production/` into its own `scaffolding/` folder with a dedicated orchestrator.
+- **Render & Assembly** (Production Skill 02) moved to [TrevorHumble/Blender-Skills](https://github.com/TrevorHumble/Blender-Skills). It's a Blender rendering operation, not a story analysis step. Scripts (`render_scene.py`, `render_all.sh`, `assemble_vse.py`) moved with it. Issues #1–4, #6 transferred.
+- **Shared infrastructure** extracted into `common.md` — agent spawning rules, OUTPUT STYLE block, show-don't-tell, director's notes lifecycle, decisions log protocol, re-run dependency map. Every orchestrator reads it first.
+- **Repo renamed** from `story-and-script-skills` to `story-pipeline`.
+
+### Added
+- `analysis/README.md` — analysis phase overview with pipeline philosophy.
+- `scaffolding/README.md` — scaffolding phase overview.
+- Cross-phase re-run instructions in `common.md`.
+- Each orchestrator has a "Where you left off" prerequisite check and a "Handoff" section naming what comes next.
+- Each phase is independently runnable — bring your own script for analysis, bring your own FigJam board for scaffolding.
+
+### Removed
+- `00_orchestrator.md` — content split across `common.md` and the phase orchestrators.
+- `production/` folder — contents relocated to `scaffolding/` and Blender-Skills.
+
+### Notes
+- This is a breaking restructure. All file paths changed. Git history preserved via `git mv`.
+- v2.x orchestrator and skill content is preserved in git history (commits prior to v3.0.0).
+
 ## [2.4.0] — 2026-05-10
 
 ### Changed

@@ -1,56 +1,18 @@
-# Story and Script Skills
+# Story Pipeline
 
-A 24-skill Robert McKee story analysis pipeline for screenplays. Agents run sequentially through structure, character, dialogue, and rhythm, then synthesize a postmortem and (in v2) a FigJam beat board.
+An end-to-end pipeline for screenplays: from Robert McKee story analysis through FigJam beat board to Blender scene scaffolding. AI agents handle the mechanical work; the storyteller makes every meaningful decision.
 
-## How it works
+This process is deliberately multi-hour. You can't automate art about the human condition, but you can give storytellers better tools. The agents surface problems and teach craft concepts in plain English. The stop protocols — pit stops, one-pagers, check-ins — are where the real work happens: the writer decides what to change, what to keep, and what to investigate further.
 
-`00_orchestrator.md` is the master skill — it spawns one agent per skill, in order, against your screenplay. Each agent reads its inputs from a staging folder, follows its skill's instructions, and writes an output file. Stop protocols (pit stops, one-pager summaries, check-ins) bring the user into the loop at meaningful checkpoints.
+## Pipeline phases
 
-The 24 skills cover, in order:
+| Phase | Folder | What it does |
+|---|---|---|
+| **Analysis** | [`analysis/`](analysis/) | 24 McKee-based skills across 4 orchestrated phases — examines genre, character, structure, dialogue. Produces a FigJam beat board and finalized director's notes. |
+| **Scene Scaffolding** | [`scaffolding/`](scaffolding/) | Reads the beat board and director's notes, creates one Blender scene file per beat with characters appended. Mechanical only — the artist poses, lights, and cameras. |
+| **Render & Assembly** | [Blender-Skills repo](https://github.com/TrevorHumble/Blender-Skills) | Takes posed scenes and produces a video deliverable. Headless rendering with mid-render vision verification, VSE assembly. Lives in the Blender-Skills repo. |
 
-1. Genre Contract — what the audience is promised
-2. Controlling Idea — the one-sentence argument the climax makes
-3. Story Spine — the scene-by-scene throughline
-4. Image System — recurring visuals carrying argument
-5. Act Structure — proportions, turning points
-6. Inciting Incident — what disturbs the protagonist's life
-7. Complications — escalating obstacles
-8. Crisis — the dilemma
-9. Conflict Levels — inner / personal / extra-personal
-10. True Character — what's revealed under pressure
-11. Character Dimension — contradictions
-12. Antagonism — opposing forces
-13. Negation of the Negation — thematic depth
-14. Subplot — secondary lines
-15. Scene Values — turn-by-turn polarity
-16. Rhythm — pacing and contrast
-17. Gap — expectation vs. result
-18. Text and Subtext — surface vs. underneath
-19. Beat Analysis — gerunds in dialogue
-20. On-the-Nose — direct dialogue diagnosis
-21. Exposition — information as ammunition
-22. Said / Unsaid / Unsayable — inner life
-23. Trialogue — third-element technique
-24. Postmortem — synthesis and rewrite roadmap
-
-## Required inputs
-
-- `script.txt` — the screenplay
-- `beat_sheet.txt` — beat-level summary
-
-These files are gitignored by default (per-script content stays local).
-
-## Status
-
-**v2.1.0 — current.** Adds `production/` — skills that come after the McKee analysis pipeline ends, taking canonical artifacts and producing scaffolded Blender scene files an artist can open to start animating. See `CHANGELOG.md` for details. v1 and v2.0.0 are preserved in git history.
-
-## Production skills
-
-Once the analysis pipeline finishes, the [`production/`](production/) folder picks up. Currently covers:
-
-- [`production/01_scene_scaffolding.md`](production/01_scene_scaffolding.md) — reading the FigJam beat board and director's notes, then creating one Blender scene file per beat with characters appended at default offset positions.
-
-Reference Python and Bash live in [`production/scripts/`](production/scripts/). They are reference implementations — paths to your project, character rigs, and Blender executable need to be edited at the top of each.
+Each phase can be run independently. Someone might bring their own script and just want a FigJam board. Someone else might bring their own beat board and just want scaffolded scene files. The phases are aware of each other — each orchestrator names the prerequisites and points to where they come from — but none requires the others to have run.
 
 ## Quick start
 
@@ -58,4 +20,36 @@ Reference Python and Bash live in [`production/scripts/`](production/scripts/). 
 2. Copy `templates/intake_template.md` to `intake.md` and fill it in.
 3. Copy `templates/directors_notes_template.md` to `directors_notes.md` (carry over the Authorial Intent line from intake).
 4. Copy `templates/decisions_log_template.md` to `decisions_log.md`.
-5. Open `00_orchestrator.md` — it tells you everything else.
+5. Start with [`analysis/foundation.md`](analysis/foundation.md) — it tells you everything else.
+
+## Shared infrastructure
+
+[`common.md`](common.md) contains rules that apply across all phases: agent spawning, the OUTPUT STYLE block, show-don't-tell staging, director's notes lifecycle, decisions log protocol, and the re-run dependency map. Every orchestrator reads it first.
+
+## Repository structure
+
+```
+common.md                    # Shared infrastructure
+analysis/                    # 24-skill McKee analysis (4 phases)
+  foundation.md              #   Phase 1: skills 01-05
+  character.md               #   Phase 2: skills 06-13
+  structure_pacing.md        #   Phase 3: skills 14-17
+  dialogue.md                #   Phase 4: skills 18-24 + FigJam
+  skills/                    #   The 24 skill files
+scaffolding/                 # Scene scaffolding
+  orchestrator.md            #   Workflow orchestration
+  01_scene_scaffolding.md    #   The scaffolding skill
+  scripts/                   #   Reference Python scripts
+templates/                   # Project setup templates
+```
+
+## Companion repo
+
+The [Blender-Skills](https://github.com/TrevorHumble/Blender-Skills) repo contains production-tested Blender workflows including the Render & Assembly skill that picks up after scene scaffolding.
+
+## Required inputs
+
+- `script.txt` — the screenplay
+- `beat_sheet.txt` — beat-level summary
+
+These files are gitignored by default (per-script content stays local).
