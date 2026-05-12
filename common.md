@@ -110,7 +110,7 @@ When a directors_notes change overturns an upstream finding, downstream skills m
 
 ### Cross-phase re-runs
 
-If a re-run triggers skills in a different phase than the one you're currently in:
+The five analysis phases are: Foundation (01-05), Narrative Arc (06-08), Character (09-13), Scene Craft (14-23), Synthesis (24). If a re-run triggers skills in a different phase than the one you're currently in:
 
 1. Complete the current phase's re-runs first
 2. Note which downstream skills in other phases need re-running

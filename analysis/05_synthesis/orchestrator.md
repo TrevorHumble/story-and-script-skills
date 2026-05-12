@@ -1,14 +1,14 @@
-# Analysis Phase 4 — Dialogue & Surface (Skills 18–24)
+# Analysis Phase 5 — Synthesis (Skill 24 + FigJam Beat Board)
 
-> Part of the [Story Pipeline](../README.md). You can run this phase independently if you have the prerequisites below, or after the [Structure & Pacing](structure_pacing.md) phase.
+> Phase 5 of 5 in the [Analysis Pipeline](../pipeline.md). You can run this phase independently if you have the prerequisites below, or after the [Scene Craft](../04_scene_craft/orchestrator.md) phase.
 
-This phase examines how dialogue carries (or fails to carry) everything established in the first three phases: the subtext beneath the surface, the action-layer of each beat, where dialogue is too direct, how exposition is delivered, the inner life characters can't express, and the third-element technique. The phase ends with a full synthesis postmortem and a FigJam beat board.
+This is the capstone of the analysis pipeline. The postmortem synthesizes all 24 skills into a prioritized action plan. The FigJam beat board turns that plan into the visual artifact the writer takes to rewrite.
 
 ---
 
 ## Read first
 
-Read [`common.md`](../common.md) before proceeding.
+Read [`common.md`](../../common.md) before proceeding.
 
 ---
 
@@ -19,35 +19,26 @@ The following must exist before starting this phase:
 | Prerequisite | Produced by |
 |---|---|
 | `script.txt`, `beat_sheet.txt` | User setup |
-| `outputs/11_character_dimension.md` | [Character & Conflict](character.md) — Skill 11 |
-| `outputs/15_scene_values.md` | [Structure & Pacing](structure_pacing.md) — Skill 15 |
-| `outputs/17_gap.md` | [Structure & Pacing](structure_pacing.md) — Skill 17 |
-| `directors_notes.md` | Updated through Structure & Pacing phase |
-| `decisions_log.md` | Updated through Structure & Pacing phase |
+| All 23 prior skill outputs (`outputs/01_*.md` through `outputs/23_*.md`) | Phases 1–4 |
+| `outputs/summary_after_04.md` | [Foundation](../01_foundation/orchestrator.md) — One-pager |
+| `outputs/summary_after_13.md` | [Character](../03_character/orchestrator.md) — One-pager |
+| `outputs/summary_after_20.md` | [Scene Craft](../04_scene_craft/orchestrator.md) — One-pager |
+| `directors_notes.md` | Updated through Scene Craft phase |
+| `decisions_log.md` | Updated through Scene Craft phase |
 
 If any are missing, halt and tell the user which prerequisite is absent.
 
 ---
 
-## Skills
+## Skill
 
 | # | Skill | Inputs | Stop |
 |---|---|---|---|
-| 18 | [Text and Subtext](skills/18_text_subtext.md) | script, 15, 17 | |
-| 19 | [Beat Analysis](skills/19_beat_analysis.md) | script, 15 | |
-| 20 | [On-the-Nose](skills/20_on_the_nose.md) | script, 19 | **One-pager** |
-| 21 | [Exposition](skills/21_exposition.md) | script, 19, 20 | |
-| 22 | [Said / Unsaid / Unsayable](skills/22_said_unsaid.md) | script, 11, 19 | |
-| 23 | [Trialogue](skills/23_trialogue.md) | script, 20, 22 | |
-| 24 | [Postmortem](skills/24_postmortem.md) | all 23 outputs + summaries + script + beat_sheet + directors_notes | **Final + FigJam build** |
+| 24 | [Postmortem](24_postmortem.md) | all 23 outputs + summaries + script + beat_sheet + directors_notes | **Final + FigJam build** |
 
 ---
 
-## Stop protocols
-
-### After Skill 20 — One-pager
-
-Brief summary of skills 14–20 findings. Save as `outputs/summary_after_20.md`.
+## Stop protocol
 
 ### After Skill 24 — Final: Postmortem + FigJam Beat Board
 
@@ -108,11 +99,9 @@ Cards are draggable. Sections are draggable. Saves to Figma cloud (cross-device 
 
 After this phase completes, the full analysis is done:
 
-- `outputs/18_text_subtext.md` through `outputs/24_postmortem.md`
-- `outputs/summary_after_20.md`
-- `postmortem.md` — prioritized action plan
+- `outputs/24_postmortem.md` — prioritized action plan
 - FigJam beat board — the visual artifact for the rewrite
 - `directors_notes.md` — final canonical staging
 - `decisions_log.md` — complete decision history
 
-**Next step:** [Scene Scaffolding](../scaffolding/orchestrator.md) — translating the beat board and director's notes into Blender scene files.
+**Next step:** [Scene Scaffolding](../../scaffolding/orchestrator.md) — translating the beat board and director's notes into Blender scene files.
